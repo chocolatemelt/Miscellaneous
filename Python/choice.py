@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # Choice (boys)
-# TODO: quote handling
 import sys, random, socket
 
 # handle bad cases
