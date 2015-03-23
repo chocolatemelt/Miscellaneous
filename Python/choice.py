@@ -4,7 +4,7 @@ import sys, random, socket
 
 # handle bad cases
 if(len(sys.argv) == 1):
-    print("Usage: choice FILE...")
+    print("Usage: choice CHOICE1 CHOICE2")
     sys.exit()
 
 # yo ansi boys
