@@ -2,7 +2,7 @@ Ontology Validation Service
 ===========================
 
 ###Goal:
-Design a and build a web service that could fit into a [Services Oriented Architecture](http://en.wikipedia.org/wiki/Service-oriented_architecture) which can manage an ontology as defined in the format specified below, and validate given objects against that ontology.  For the sake of this program, "ontology" simply means the set of entities that are defied to exist in a given domain, the attributes that they have, and their hierarchical relationship.
+Design a and build a web service that could fit into a [Services Oriented Architecture](http://en.wikipedia.org/wiki/Service-oriented_architecture) which can manage an ontology as defined in the format specified below, and validate given objects against that ontology.  For the sake of this program, "ontology" simply means the set of entities that are defined to exist in a given domain, the attributes that they have, and their hierarchical relationship.
 
 ###Ontology format definition:
 The base ontology to be used in this program is in the accompanying file `ontology.json`.  It contains a single JSON object which describes the objects, attributes, and relationship of various object types that we want to represent.  Beyond the requirements of [the JSON format](http://json.org/) itself, there are some additional restrictions of the format which describe the data:
