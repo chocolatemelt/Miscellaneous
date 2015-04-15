@@ -16,3 +16,13 @@ Installing the project and running the server:
 Alternatively:
     
     sails lift
+
+## Troubleshooting
+Sometimes node doesn't actually get the KILL signal. Then you get errors about the port being in use. We fix that by killing the node process.
+For Windows (in the administrator CLI):
+
+    C:\Windows\System32>taskkill /F /IM node.exe
+
+For Linux:
+
+    killall node
