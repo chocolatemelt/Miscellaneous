@@ -1,0 +1,7 @@
+{
+  "type": "animal.livestock.chicken",
+  "eggLaying": [
+    true,
+    false
+  ]
+}

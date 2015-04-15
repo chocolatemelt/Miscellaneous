@@ -1,0 +1,7 @@
+{
+  "type": "animal.livestock.chicken",
+  "weight": 20,
+  "value": 125.25,
+  "eggLaying": true,
+  "eggsProduced": 10,
+}

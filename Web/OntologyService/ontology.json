@@ -1,0 +1,34 @@
+{
+  "animal": {
+    "weight": "int",
+    "*weight": "?",
+    "livestock": {
+      "value": "float",
+      "*value": "?",
+      "cattle": {
+        "grassFed": "boolean",
+        "*grassFed": "?",
+        "angus": "boolean",
+        "*angus": "?"
+      },
+      "chicken": {
+        "eggLaying": "boolean",
+        "*eggLaying": "1",
+        "eggsProduced": "int"
+      }
+    },
+    "domestic": {
+      "name": "string",
+      "*name": "+",
+      "cat": {
+        "declawed": "boolean",
+        "*declawed": "1"
+      },
+      "dog": {
+        "trained": "boolean",
+        "*trained": "1",
+        "breed": "string"
+      }
+    }
+  }
+}
