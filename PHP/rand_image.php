@@ -3,8 +3,6 @@
  * This tiny script just iterates through the folder it's in and returns a random PNG image.
  */
 
-header("Content-type: image/png");
-
 $images = array();
 
 /* glob is the fun and easy way to do it - but very slow! - http://www.phparch.com/2010/04/putting-glob-to-the-test/
@@ -22,8 +20,8 @@ while(($filename = readdir($dir)) !== false) {
 }
 closedir($dir);
 
-/* now get the image and readfile it */
+/* now get the image and redirect to it */
 $random = $images[array_rand($images)];
-readfile($random);
+header('Location: ' . $random);
 
 ?>
