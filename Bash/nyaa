@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Download from Nyaa.se via curl.
 [ $# -eq 0 ] && { echo "Usage: $0 [RSS feed URL]"; exit 1; }
-curl "$1" | grep -o '<link>http://www.nyaa.se/?[^<]*' | grep -o '[^>]*$' | sed -e 's/\&#38;/\&/g'
+curl "$1" | grep -o '<link>http://www.nyaa.se/?[^<]*' | grep -o '[^>]*$' | sed -e 's/\&#38;/\&/g' | xargs -n 1 curl -O
