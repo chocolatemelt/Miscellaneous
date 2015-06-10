@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-# Download from Nyaa.se via curl.
+# Download from Nyaa.se via curl. Downloads as id.torrent in the current directory.
 [ $# -eq 0 ] && { echo "Usage: $0 [RSS feed URL]"; exit 1; }
 curl "$1" | grep -o '<link>http://www.nyaa.se/?[^<]*' | grep -o '<link>http://www.nyaa.se/?[^<]*' | grep -o '[^>]*$' | sed -e 's/\&#38;/\&/g' | sed -e 's/tid=/tid={/g' | sed 's/$/}/g' | xargs -n 1 curl -o "#1.torrent"
