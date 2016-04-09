@@ -1,30 +1,15 @@
 #include <iostream>
-#include <sstream>
-#include <cstdlib>
+#include <string>
 
-template <class T> inline std::string to_string (const T &t) {
-	std::stringstream ss;
-	ss << t;
-	return ss.str();
-}
-
-void flip(char *one, char *two) {
-	char temp = *one;
-	*one = *two;
-	*two = temp;
-}
-
-void pancake(char *arr, int start, int end) {
-	int dif = abs(start-end);
-	for(int i = 0; i <= dif / 2; ++i) {
-		char temp = arr[start+i];
-		arr[start+i] = arr[end-i];
-		arr[end-i] = temp;
+int flipPancakes(std::string s, char target) {
+	// flipping subproblems (divide and conquer)
+	for(int i = s.size() - 1; i >= 0; --i) {
+		if(s[i] != target) {
+			if(target == '+') return(flipPancakes(s.substr(0, i+1), '-')) + 1;
+			else return(flipPancakes(s.substr(0, i+1), '+')) + 1;
+		}
 	}
-	for(int i = start; i <= end; ++i) {
-		if(arr[i] == '-') arr[i] = '+';
-		else arr[i] = '-';
-	}
+	return 0;
 }
 
 int main() {
@@ -38,7 +23,7 @@ int main() {
 	while(i < n) {
 		std::string pancakes;
 		std:: cin >> pancakes;
-		std::cout << pancakes;
+		std::cout << "Case #" << i+1 << ": " << flipPancakes(pancakes, '+') << std::endl;
 		++i;
 	}
 	return 0;
