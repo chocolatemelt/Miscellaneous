@@ -1,0 +1,79 @@
+/*=================================*\
+ * Author: Kevin Zhang
+ * Name: sassy.css
+ * Comment: Style for the coming soon page.
+ \*================================*/
+
+/*=== INITIALIZE === */
+html, body {
+	height: 100%;
+	width: 100%;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16pt;
+}
+
+ /*=== FULL BACKGROUND IMAGE ===*/
+#lychee {
+	min-height: 100%;
+	min-width: 1600px;
+	width: 100%;
+	height: auto;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: -1;
+}
+
+@media screen and (max-width: 1600px) {
+	#lychee {
+		left: 50%;
+		margin-left: -800px;
+	}
+}
+
+/*=== CONTENT ===*/
+#soontm {
+	display: block;
+	position: fixed;
+	right: 5%;
+	top: 25%;
+}
+
+#soontm h1 {
+	font-size: 2.5em;
+}
+
+/*=== LINKS ===*/
+#links {
+	display: block;
+	position: fixed;
+	right: 5%;
+	bottom: 5%;
+}
+
+#links p {
+	margin-bottom: 10px;
+}
+
+#links ul {
+	display: inline;
+	text-indent: 9999px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+#links li {
+	display: inline-block;
+	width: 64px;
+	height: 64px;
+}
+
+#links li a {
+	display: block;
+	width: 64px;
+	height: 64px;
+}
+
+.github { background: url('../images/github.png'); background-size: 64px; }
+.behance { background: url('../images/behance.png'); background-size: 64px; }
+.linkedin { background: url('../images/linkedin.png'); background-size: 64px; }

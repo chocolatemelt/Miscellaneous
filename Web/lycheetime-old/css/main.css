@@ -1,0 +1,296 @@
+/* ============================================================================= *\
+ * MAIN STYLESHEET
+ * Applicable only to the front page (/).
+\* ============================================================================= */
+
+/* ====== GENERICS ====== */
+.vertical-wrap {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+}
+
+/* ====== SPLASH ====== */
+#lychee, #anchor, #scroll {
+	display: block;
+	position: absolute;
+	width: 15em;
+	height: 15em;
+	max-width: 500px;
+	max-height: 500px;
+	margin: auto;
+	top: 0; left: 0; right: 0; bottom: 0;
+}
+
+/* main splash circle - monogatari-style */
+#splash-circle {
+	display: block;
+	position: absolute;
+	width: 30vh;
+	height: 30vh;
+	border-radius: 50%;
+	background: #FE5A81;
+	cursor: pointer;
+	margin: auto;
+	top: 0; left: 0; right: 0; bottom: 0;
+	-webkit-transition: width .5s ease, height .5s ease;
+	-khtml-transition: width .5s ease, height .5s ease;
+	-moz-transition: width .5s ease, height .5s ease;
+	-ms-transition: width .5s ease, height .5s ease;
+	-o-transition: width .5s ease, height .5s ease;
+	transition: width .5s ease, height .5s ease;
+}
+
+#splash-circle:hover {
+	width: 35vh;
+	height: 35vh;
+}
+
+#splash-circle h1 {
+	position: absolute;
+	color: #561c2f;
+	font-size: 10vh;
+	font-family: 宋体, SimSun, 华文细黑, STXihei, serif; /* "FangSong", "仿宋", STFangSong, "华文仿宋", for Monogatari styling */
+	text-align: center;
+	top: 50%; left: 50%;
+	margin: -5vh 0 0 -10vh; /* honestly no idea why this is the way it is */
+	cursor: pointer;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+#lychee {
+	z-index: 5;
+}
+
+#lychee img {
+	display: block;
+	width: 15em;
+	height: 15em;
+	max-width: 500px;
+	max-height: 500px;
+}
+
+#lychee.stick {
+	position: fixed;
+	top: 0;
+	margin: 0 auto;
+}
+
+/* scroll text */
+#scroll {
+	top: 75%;
+
+}
+
+/* everything is in ems to scale with font-size. image is also 4x normal size to scale gracefully */
+#scroll h2 {
+	font-family: 'Libre Baskerville', Baskerville, Baskerville Old Face, serif;
+	font-style: italic;
+	font-size: 1.2em;
+	text-align: center;
+}
+
+#scroll h2 { /* used to be the styling for the anchor.. we'll see where i go with this */
+	display: block;
+	height: 3em;
+	color: #2b2922;
+	text-decoration: none;
+	background: url('../img/scroll.png') no-repeat center 1.7em;
+	background-size: 2.4em .6em;
+}
+
+/* ====== INTRODUCTION ====== */
+#intro {
+	color: #444;
+	font-family: 'Libre Baskerville', Baskerville, Baskerville Old Face, serif;
+	transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+}
+
+#intro h1 {
+	color: #000;
+	display: block;
+	margin-left: 10%;
+	font-size: 3em;
+}
+
+#intro a {
+	color: #cc4452;
+	text-decoration: none;
+	outline: none;
+}
+
+#intro a:hover { text-decoration: underline; }
+
+#intro em { color: #000; font-style: italic; }
+
+#intro strong { color: #000; font-weight: 900; }
+
+#intro p {
+	display: block;
+	padding-top: 1%;
+	padding-left: 10%;
+	line-height: 1.5em;
+	font-size: 1.75em;
+	width: 55%;
+}
+
+#intro .ampersand { font-style: italic; }
+
+/* ====== GALLERY ====== */
+#gallery {
+	color: #444;
+	font-family: 'Libre Baskerville', Baskerville, Baskerville Old Face, serif;
+}
+
+#gallery-container {
+	width: 80%;
+	margin-left: 10%;
+}
+
+#gallery-header {
+	position: relative;
+	height: 5em; /* size relative to # of tags */
+	width: 100%;
+}
+
+/* recent work head title */
+#gallery h1 {
+	position: absolute;
+	bottom: 0;
+	color: #000;
+	font-size: 3em;
+}
+
+/* dividing line */
+#gallery hr {
+	position: absolute;
+	bottom: 0;
+	color: #000;
+	border: none;
+	border-top: 1px solid #000;
+	text-align: center;
+	padding: 0;
+	width: 80vw;
+}
+
+#gallery hr.begin {
+	margin-bottom: 0;
+}
+
+#gallery hr.begin:after {
+	content: "※";
+	display: inline-block;
+	position: relative;
+	top: -0.4em;
+	font-size: 1.5em;
+	padding: 0 0.25em;
+	background: #e7e7e7 url('../img/x.png') repeat right top;
+}
+
+/* recent work inline tag list */
+#gallery-filters {
+	font-style: italic;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	text-align: right;
+	width: 50%;
+	user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+	-webkit-touch-callout: none;
+}
+
+#gallery-filters li.tag {
+	display: inline-block;
+	font-size: 1.5em;
+	margin-left: 5%;
+}
+
+#gallery-filters li.tag a {
+	cursor: pointer;
+	text-decoration: none;
+  transition: .3s;
+	-o-transition: .3s;
+  -ms-transition: .3s;
+  -moz-transition: .3s;
+  -webkit-transition: .3s;
+}
+
+/* specific tag colors... */
+a.design {
+	color: #cc4452;
+}
+
+a.devel {
+	color: #8a3b80;
+}
+
+a.misc {
+	color: #723147;
+}
+
+/* ...and their hovers */
+a.design:hover {
+	color: #fc698c;
+}
+
+a.devel:hover {
+	color: #c958bb;
+}
+
+a.misc:hover {
+	color: #c76586;
+}
+
+a.inactive {
+	color: #999;
+}
+
+/* ====== MASONRY ====== */
+#wall {
+	display: block;
+	margin-top: 25px;
+	width: 80vw;
+	z-index: -1;
+}
+
+.brick {
+	float: left;
+	margin-bottom: 24px; /* gutter size; very specific */
+}
+
+.brick img {
+	width: 100%;
+}
+
+/* ====== @media queries! ====== */
+@media(min-width: 1200px) {
+	.gutter, .brick { width: calc(25% - 18px); }
+	.w2 { width: calc(50% - 12px); }
+}
+
+@media(max-width: 1200px) {
+	.gutter, .brick { width: calc(50% - 12px); }
+	.w2 { width: 100%; }
+	#intro p { font-size: 1.5em; width: 70%; }
+}
+
+@media(max-width: 768px) {
+	.gutter, .brick { width: 100%; }
+	#intro p { font-size: 1.25em; width: 90%; }
+	#gallery-header { height: 3em; }
+	#gallery-header h1 { font-size:1.5em; }
+	#gallery hr.begin:after { top: -0.9em; font-size: 0.75em; }
+	#gallery-filters li.tag { font-size: 1em; }
+}

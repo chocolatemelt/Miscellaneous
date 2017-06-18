@@ -1,0 +1,79 @@
+   /* ============================================================================
+ * ADM STYLESHEET
+ * Main font: Fira Mono / monospace
+ * Colors:
+ * body / background: #073642;
+ * input boxes: #073642;
+ * normal text: #8CA1A1;
+ * important text 1: #2689B2; (blue)
+ * important text 2: #C64727; (orange)
+ * important text 3: #887706; (light orange)
+ * when in doubt: public/images/solarized-ref.png
+ * If changing colors, please run a search and replace so no color gets left behind.
+\* ============================================================================= */
+
+body {
+	background: #002B36;
+	color: #8CA1A1;
+	font: .8em 'Fira Mono', Consolas, monospace;
+}
+
+#bigbox {
+	position: absolute;
+	display: block;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#bigbox h1 {
+	font-size: 1.6em;
+	padding: 5px;
+}
+
+#bigbox form {
+	display: block;
+	width: 415px;
+	background-color: #073642;
+}
+
+#bigbox label {
+	font-size: 2.0em;
+	padding: 10px 0px 10px 10px
+}
+
+#login {
+	height: 100px;
+}
+
+#bigbox input[type=text] {
+	background-color: #eee8d5;
+	color: #586e75;
+	font: 2.0em 'Fira Mono', Consolas, monospace;
+	border: none;
+	width: 375px;
+	height: 50px;
+	padding: 0 10px;
+	margin: 10px 0 10px 10px;
+}
+
+#bigbox input.last {
+	width: 325px;
+}
+
+#bigbox input[type=radio] {
+	/*display: none;*/
+}
+
+#bigbox input[type=submit] {
+	position: absolute;
+	display: inline-block;
+	background-color: #586e75;
+	color: #eee8d5;
+	font: 2.0em 'Fira Mono', Consolas, monospace;
+	border: 0 none;
+	cursor: pointer;
+	height: 50px;
+	width: 50px;
+	margin-top: 10px;
+}
