@@ -1,0 +1,140 @@
+[11/05/2015]
+
+Homework 4 -- DUE MONDAY 11/9 (by 11:59PM)
+
+-- parallelize to the extent possible
+
+addition/multiplication must be fully parallelized
+-- use a mutex (in the parent thread) to synchronize
+    the "writes" from each child thread to the parent
+     thread
+
+   e.g., (+ 100 210)
+
+          +----------+
+          | parent   |
+          |          |
+          | x:   0   |    (for '*' initialize to 1)
+          | mutex    |
+          |          |
+          +----------+
+
+    +-------+      +-------+
+    | child |      | child |
+    |  100  |      |  210  |
+    +-------+      +-------+
+
+
+subtraction -- at least do this:
+-- for first operand, create a child thread, then block on join
+    before creating any more child threads
+-- for second, third, etc. operands, all should be running in parallel
+
+   (- 10 5 3)  <== three child threads, i.e., 10, 5, and 3
+
+   (- (+ 9 12) 2 12) <== three child threads, i.e., (+ 9 12), 2, and 12
+
+subtraction -- more elegant:
+-- parallelize all child threads, but child thread for the first
+    operand performs addition instead of subtraction
+
+   0 + 10 - 5 - 3          0 - 5 - 3 + 10
+
+subtraction -- more elegant:
+-- parallelize all child threads with each child adding
+   (therefore, negate all operands except the first one)
+
+   0 + 10 + -5 + -3        0 + -3 + -5 + 10
+
+division -- at least do this:
+-- for first operand, create a child thread, then block on join
+    before creating any more child threads
+-- for second, third, etc. operands, all should be running in parallel
+
+======================================================================
+
+Noncontiguous Memory Allocation
+-- Given process P, slice up the process into N equally sized pages
+   (where the last page likely does not use the entire page of memory)
+
+-- We do NOT have any need for defragmentation   (-:
+
+-- But......we do need a way to map logical addresses to physical
+    addresses, which is implemented using a PAGE TABLE              :-(
+
+
+ e.g., a 16-bit memory address with the high-order 4 bits representing
+        the page number p
+
+
+       logical address:  1010111110101010
+
+
+                             |
+       logical address:  1010|111110101010
+                             |
+                          ^     ^
+                          |     |
+                        page   page offset
+                       number
+
+
+                     e.g., page 10 maps to frame 6
+
+                             |
+      physical address:  0110|111110101010
+                             |
+
+
+    How many pages are there?
+
+        4
+       2   ==>  16
+
+
+    What is the page size (in bytes)?
+
+       12
+      2    ==>  4096 bytes
+
+
+PRINCIPLE OF LOCALITY
+-- Much more often than not, when we're accessing memory on
+    a given page P, the next memory address we're going to
+     access will also be on page P
+
+-- The use of a Translation Lookaside Buffer (TLB), as long as
+    we have a high enough TLB hit ratio, we can significantly
+     reduce the overhead of using a page table
+
+-- e.g., each memory access requires 100ns and
+         each TLB memory access requires 20ns
+
+Memory access without using a TLB:
+-- (1) page table memory access (100ns) plus
+   (2) requested memory access (100ns)
+
+-- each memory access then requires 200ns
+
+Memory access with a TLB:
+-- (1) TLB memory access (20ns);
+     (2a) TLB cache hit --> requested memory access (100ns)
+     (2b) TLB cache miss --> page table memory access (100ns) plus
+                             requested memory access (100ns)
+
+Effective Memory Access Time (EMAT):
+-- e.g., given a TLB hit ratio of 96%
+
+  EMAT = 0.96 * (20ns+100ns)  +  0.04 * (20ns+100ns+100ns)
+         ^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^
+           TLB hit                     TLB miss
+
+       = 0.96 * 120  +  0.04 * 220
+       = 115.2 + 8.8
+       = 124ns
+
+
+ TO DO: recalculate EMAT with TLB hit ratio of 99%, 50%, 25%, etc.
+
+
+

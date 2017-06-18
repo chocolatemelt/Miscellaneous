@@ -1,0 +1,147 @@
+[11/09/2015]
+
+SEGMENTATION
+
+-- a SEGMENT is a "slice" of memory
+   -- it exists in a noncontiguous memory space
+   -- it can be of variable size
+      -- the OS allocates memory for the segment
+      -- only the given process (or processes)
+         can access the allocated memory
+         -- otherwise we have a segmentation fault
+
+-- a SEGMENT is also a "slice" of a program
+   -- segments correspond to logical divisions of a program:
+      -- code segment
+      -- data segment
+         -- contains initialized static variables
+      -- block started by symbol (BSS) segment
+         -- contains statically allocated variables
+             with no size at compile time
+         -- only size of total required space is stored
+         -- initialized at runtime
+      -- runtime stack
+      -- heap
+      -- library module segment (allowing sharing)
+
+-- Segmentation lookup
+   -- map from logical to physical memory address
+   -- a memory address in a segment must have two components:
+      -- segment start (which segment are we in?)
+      -- (byte) offset (within that given segment)
+
+===============================================================
+
+VIRTUAL MEMORY
+-- A means for exposing memory to processes
+-- Mapping memory addresses seen by a process (virtual addresses)
+    into physical address
+
+-- With virtual memory, only part of a process needs to be loaded
+    into physical memory for it to start its execution
+-- Unused pages (all pages) are on disk
+
+Virtual Memory Policies:
+-- the FETCH policy governs when a page should be loaded into
+    memory (e.g., demand paging, demand paging that loads some
+     surrounding pages into physical memory)
+
+-- the PLACEMENT policy specifies where a page is loaded into
+    physical memory (use page table)
+
+-- the REPLACEMENT policy determines which existing page
+    (already in physical memory) should be replaced
+     (i.e., identifies the VICTIM page)
+
+Page allocation:
+-- in a STATIC ALLOCATION scheme, the number of frames per process
+    is fixed/static
+-- in a DYNAMIC ALLOCATION scheme, the number of frames per process
+    can vary....
+
+-- in an EQUAL ALLOCATION scheme, all processes have an equal number
+    of frames
+-- in a PROPORTIONAL ALLOCATION scheme, processes are allocated
+    frames in proportion to size, priority, etc.
+
+
+Associate a valid/invalid bit with each page table entry
+-- initially, all entries are set to i (invalid)
+-- during address translation, if valid/invalid bit is v (valid),
+    then the page is already in physical memory
+-- otherwise (invalid), a PAGE FAULT occurs
+
+
+-- goal is to reduce/minimize the number of page faults that occur
+
+
+-- Page Replacement Policy
+   -- algorithm for selecting the victim page to be replaced
+       in physical memory
+
+   page reference stream:
+    1 2 3 2 1 1 3 4 4 2 4 5 7 2 2 8 3 2 2 1 1
+
+   given a 3-frame fixed memory allocation scheme (for this process)
+
+
+FIFO (First-In-First-Out):
+    1 2 3 2 1 1 3 4 4 2 4 5 7 2 2 8 3 2 2 1 1
+--------------------------------------------------------
+    1 1 1 1 1 1 1 4 4 4 4 4 4 2 2 etc.
+    . 2 2 2 2 2 2 2 2 2 2 5 5 5 5
+    . . 3 3 3 3 3 3 3 3 3 3 7 7 7
+--------------------------------------------------------
+    * * *         *       * * *
+page faults
+
+
+LRU (least-recently used)
+    1 2 3 2 1 1 3 4 4 2 4 5 7 2 2 8 3 2 2 1 1
+--------------------------------------------------------
+    1 1 1 1 1 1 1 1 1 2 2 2 7 7 7 etc.
+    . 2 2 2 2 2 2 4 4 4 4 4 4 2 2
+    . . 3 3 3 3 3 3 3 3 3 5 5 5 5
+--------------------------------------------------------
+    * * *         *   *   * * *
+page faults
+
+
+LFU (least-frequently used)
+
+OPT (optimal based on future page references...)
+
+
+Working Set
+
+ page reference stream:
+    1 2 3 2 1 1 3 4 4 2 4 5 7 2 2 8 3 2 2 1 1
+        ^   ^
+        |<->|
+          working set is { 1, 2, 3 }
+
+ page reference stream:
+    1 2 3 2 1 1 3 4 4 2 4 5 7 2 2 8 3 2 2 1 1
+        ^         ^
+        |<------->|
+          working set is { 1, 2, 3, 4 }
+
+ page reference stream:
+    1 2 3 2 1 1 3 4 4 2 4 5 7 2 2 8 3 2 2 1 1
+                              ^         ^
+                              |<------->|
+                                 working set is { 2, 3, 8 }
+
+
+
+
+
+TO DO: Simulate (by hand) the various page replacement
+       algorithms above using the given page reference stream
+       and a fixed 3-frame memory (repeat using 4-frame memory)
+
+
+
+
+
+

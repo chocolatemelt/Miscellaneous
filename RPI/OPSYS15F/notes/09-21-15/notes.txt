@@ -1,0 +1,110 @@
+[09/21/2015]
+
+Project 2 due date postponed to 10/5
+
+Homework 2
+
+-- parent calls fork() and then calls wait()
+   -- child reads next chunk of data, displays it, then exits
+
+   to exit:
+
+   (a)  return EXIT_SUCCESS;
+
+   (b)  exit( EXIT_SUCCESS );
+
+
+
+   perror( "open() failed" );
+
+   fprintf( stderr, "ERROR: something broke\n" );
+
+=================================================================
+
+-- Preemption occurs when the currently running process is
+    "kicked out" of the CPU....
+
+-- CPU scheduling decisions take place under 1 of 4 conditions:
+
+   (a) When a process switches from the running state to the waiting state,
+         such as for I/O
+
+   (b) When a process switches from the running state to the ready state,
+         for example in response to an interrupt
+
+   (c) When a process switches from the waiting state to the ready state,
+         e.g., when I/O completes
+
+   (d) When a process terminates
+
+-- For conditions (a) and (d), we always schedule/select the next process
+
+-- For conditions (b) and (c), we have a choice either to continue running
+    the current process or select a different one (i.e., preemption)
+
+-- Condition (b) is a preemption (e.g. Round Robin)
+
+-- Condition (c) might cause a preemption to occur on the currently
+    running process
+
+-- Conditions (a) and (d) are not preemptions
+
+
+
+
+
+-- FCFS could cause very long average wait times
+
+-- SJF could cause starvation -- e.g. a process that has
+    a very long CPU burst time could be waiting indefinitely
+     because we always have shorter CPU bursts to execute
+
+
+
+-- Shortest Remaining Time (SRT) is essentially SJF with preemption
+
+     pid     CPU burst time   arrival times
+      1          18              0
+      2           7              0
+      3           6              0
+      4           2              3
+
+          p
+      +---+--+---+-------
+ SRT: | P3|P4|P3 | etc.
+      +---+--+---+--------
+
+  P4 preempted P3 because P4 had only 2ms of burst time,
+    whereas P3 had 3ms remaining...
+
+
+-- Priority Scheduling
+
+   -- each process is assigned a priority (e.g., burst times,
+       ratio of CPU to I/O activity, system resource use, etc.)
+
+   -- the process with the highest priority gets scheduled first
+
+   -- when multiple processes have the same priority, we need
+       to apply a secondary algorithm to that subset (e.g., FCFS)
+
+
+
+-- A key problem with SJF/SRT is that we do not know CPU burst times
+    beforehand....
+
+   -- We can predict the length of each future (i.e. the next) CPU burst
+       based on some historical measures of recent burst times
+
+        We can use exponential averaging
+
+           tau  -- estimated burst time
+
+           t    -- actual burst time
+
+
+       tau[i+1] = alpha x t[i]  +  (1-alpha) x tau[i]
+
+       alpha is a constant, typically 0.5
+
+

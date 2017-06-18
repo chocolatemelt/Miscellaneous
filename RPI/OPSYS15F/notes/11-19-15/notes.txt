@@ -1,0 +1,74 @@
+[11/19/2015]
+
+Project 3 due date extended to 11:59PM Tuesday 11/24
+ (with late window after the holiday TBD)
+
+
+e.g., given a block size of X, what's the maximum file size?
+
+      X = 4096 bytes
+
+      direct blocks: 15 x 4096 = 61,440 bytes
+
+      single indirect: 61,440 + (1024 x 4096) = 4,255,744 bytes
+
+                                        2
+      double indirect: 4,255,744 + (1024  x 4096) = 4,299,223,040 bytes
+
+                                            3
+      triple indirect: 4,299,233,040 + (1024  x 4096)
+
+                             = 4,402,345,734,144 bytes
+
+
+=====================================================================
+
+I/O System:
+-- two primary objectives:
+   1. handle application I/O requests
+      -- map logical address to physical address (disk or device)
+      -- send response back to the application
+   2. optimize I/O performance
+      -- depending on request types, device types, etc.
+
+-- disk access consists of
+   -- disk arm seeks to the appropriate track
+   -- disk rotates until the requested sector is accessible
+
+-- the DISK ACCESS TIME is the sum of:
+   -- SEEK TIME
+   -- ROTATIONAL LATENCY
+
+-- caching the entire sector
+-- caching surrounding sectors (or entire tracks)
+
+-- a DISK CONTEXT SWITCH occurs when switching from on I/O request
+    to another
+   -- Disk context switch time is substantially higher than
+       process/CPU context switch time
+   -- The time to complete the nth I/O operation depends on
+       where the (n-1)th operation finished
+
+Scheduling algorithm determines which pending disk I/O request
+ to select/service next:
+ -- FCFS
+ -- Shortest Seek Time First (SSTF)
+ -- Elevator (SCAN) and Circular SCAN (C-SCAN)
+ -- Elevator (LOOK) and Circular LOOK (C-LOOK)
+
+Given: disk access reference string, which specifies
+         requested tracks for reads/writes
+
+    44, 20, 95, 4, 50, 52, 47, 61, 87, 25, etc.
+
+Given: the disk arm starts at track 50
+
+SCAN scans in both directions, end-to-end scanning
+
+C-SCAN scans in only one direction
+
+LOOK (and C-LOOK) algorithms
+-- disk arm moves in one direction as long as there are pending
+    requests in that direction
+     (otherwise, it reverses direction immediately)
+

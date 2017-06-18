@@ -1,0 +1,126 @@
+[12/07/2015]
+
+Project 4
+-- due date is 12/10,
+    late penalty window ends 11:59PM on Tuesday 12/15
+     with no late penalty
+
+-- clients disconnecting from the server.....
+
+   -- to determine if a client disconnects (i.e., client
+       closes its socket), the server will return from
+        the read()/recv() system call with a 0
+
+
+-- for testing your server, use netcat (do not use telnet)
+
+   bash$ netcat localhost 8765                    <enter> == "\n\r"
+   STORE xyz.txt 14<enter>
+   ABCDEFGHIJKLM<enter>
+
+   server receives: "STORE xyz.txt 14\n"
+   server receives: "ABCDEFGHIJKLM\n"
+
+
+-- when your server is receiving data (especially for the STORE cmd),
+    expect (support) multiple messages
+
+
+
+
+  char buffer[4096];   /* char is equivalent to a byte */
+
+
+
+
+===============================================================
+
+Open Systems Interconnection (OSI) Reference Model
+
+The ISO proposal for the standardization of various protocols
+ in computer networks
+
+A seven-layer protocol stack:
+
+  Application (e.g., HTTP, HTTPS, etc.)
+  (Presentation)
+  (Session)
+  Transport   <== TCP, UDP
+  Network     <== IP
+  (Data Link)
+  Physical    <== Ethernet
+
+IP (the Network layer):
+-- IP provides host-to-host delivery service of datagrams
+-- IP is connectionless
+-- IP is unreliable
+
+IP addresses
+-- IP addresses are logical addresses at the Network layer
+
+An IP address contains information about what NETWORK the
+destination host is on
+-- This enables ROUTING at the Network layer
+-- e.g., addresses:
+128.113.2.68 (www.rpi.edu)
+128.113.126.13 (www.cs.rpi.edu)
+128.113.126.29 (linux.cs.rpi.edu)
+128.213.56.14 (cs.rpi.edu machine)
+
+   128.113
+
+   10000000 01110001
+
+===========================================================
+
+SERVER TYPES:
+
+(1) Iterative server -- server receives a connection or
+    datagram/packet, handles that connection/datagram/request,
+    then accepts the next one, etc.
+
+    i.e., a single thread of processing client requests
+
+    e.g., Server.java
+
+
+(2) fork()-based server -- a child process is created for
+    each client connection (or for each datagram/packet rcvd)
+
+    e.g., server.c
+
+
+(2.5) fork()-based server with pre-forked processes
+
+(3) thread-based server -- a child thread is created for
+    each client connection (or for each datagram/packet rcvd)
+
+(3.5) thread-based server with pre-created threads
+      (i.e., a thread pool)
+
+(4) A select-based server -- a single process that is able
+    to poll multiple descriptors to check for activity
+
+    i.e., no need for multiple processes or threads
+
+    but nothing is running simultaneously....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

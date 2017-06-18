@@ -1,0 +1,64 @@
+[09/10/2015]
+
+Homework #1 Clarifications
+
+(1) Case sensitive on the prefix-matching
+
+(2) Error checking -- at a minimum, check for
+    correct number of command-line args, check all
+    system/library call return values for errors
+
+(3) Assume that maximum word length in any input
+    text file will be 1024 characters; better way
+    is to use "%ms" as the fscanf() format string;
+    btw if you use "%ms" you are responsible for
+    calling free() on that memory later
+
+(4) In general, use free() for all dynamically
+    allocated memory.
+
+(5) Resubmissions on LMS are fine; TAs will use
+    the last submission.
+
+======================================================
+
+One key debugging caveat
+-- you will not necessarily see any output from printf()
+   if you do not use '\n' (newline) at the end
+
+      printf( "HERE!" );    <=== might not display/output
+      fflush( NULL );  <== check man page
+
+      printf( "HERE!\n" );
+
+======================================================
+
+Project #1
+
+(1) Full output for project #1 example to be published....
+
+
+======================================================
+
+File Descriptors
+
+-- each process has a file descriptor table to keep
+   track of its (integers) file descriptors
+
+   fd          C++      Java            C
+   0  stdin    cin      System.in       scanf(), read(), getchar(), etc.
+   1  stdout   cout     System.out      printf(), write(), putchar(), etc.
+   2  stderr   cerr     System.err      fprintf( stderr, "ERROR:....\n" );
+
+   stdout is buffered output
+   stderr (fd 2) is not buffered
+
+
+
+   FILE * fopen( ... );
+   fscanf( ... );
+   fclose( ... );
+
+
+
+

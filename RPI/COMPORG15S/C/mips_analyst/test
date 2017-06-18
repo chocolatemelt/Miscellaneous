@@ -1,0 +1,11 @@
+# Sample MIPS Program
+        .data # Data segment begins here
+val:    .word 80
+_x:     .word 0
+        .text # Text segment begins here
+start:  lw $s0, val
+        lw $s1, _x
+        add $s0, $s0, $s1
+        sw $s0, val # Store result in val
+done:   li $v0, 10
+        syscall

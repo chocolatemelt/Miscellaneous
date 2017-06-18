@@ -1,0 +1,325 @@
+[11/02/2015]
+
+Homework 4
+
+(/ 100 5 4 2) ==>   100 / 5 / 4 / 2
+
+(- 100 10 20 30) ==>   100 - 10 - 20 - 30
+
+Key:
+(1) parallelize to the extent possible
+(2) each parent thread (i.e., an operator with operand child threads)
+     must have one shared variable to hold the result (and each child
+      thread updates this shared variable)
+
+For addition and multiplication, its implied that you start with 0 or 1
+
+e.g., (- 5 6 (* 7 8))
+
+For subtraction and division operators, use the "Starting with..." shown below
+
+THREAD 31091: Starting '-' operation
+THREAD 31092: Starting with first operand '5'
+THREAD 31093: Subtracting '6'
+THREAD 31094: Starting '*' operation
+THREAD 31095: Multiplying by '7'
+THREAD 31096: Multiplying by '8'
+THREAD 31094: Ended '*' operation with result '56'
+THREAD 31094: Subtracting '56'
+THREAD 31091: Ended '+' operation with result '67'
+THREAD 31091: Final answer is '67'
+
+=====================================================================
+
+Memory Management
+
+Memory manager
+
+-- allocate/deallocate memory for processes
+   (assign memory to new processes / deallocate memory for processes
+      that leave the system)
+
+-- protection, i.e., no access to a given process's memory space
+    from outside of that given process
+
+-- shared memory management (between two or more processes)
+
+
+Approaches:
+-- Contiguous Memory Allocation
+-- Noncontiguous Memory Allocation (paging/segmentation)
+-- Virtual Memory
+
+Without multiprogramming, memory is exclusively/entirely
+  allocated to one program at a time
+
+
+With multiprogramming, numerous options for managing memory
+-- early approaches identified PARTITIONS, where a partition
+    is a block of CONTIGUOUS memory that could be allocated
+     to a process
+
+Degree of multiprogramming
+-- how many processes can be in memory at once
+-- depends on process sizes and amount of memory available
+
+Processes vary in size
+
+In general, memory is cheap!  But programs require increasingly
+ high amounts of memory -- why?
+ -- code bloat (i.e., bad programming / memory leaks)
+ -- increased graphics and/or GUI requirements
+ -- increased resolution (data) in associated devices (e.g., cameras)
+ -- mission/feature creep?  my android/iphone/etc. can do ANYTHING
+ -- increased scale
+===================================================================
+
+A LOGICAL ADDRESS references some location within
+ a given PROCESS ADDRESS SPACE
+ -- think of the logical address as an offset from
+    the first byte of the process
+
+                     LABEL   LOAD x
+                             ...
+                             DECR x
+                             BNE  LABEL
+
+ -- RELOCATABLE CODE
+
+ When a process is placed into memory, its logical address
+  space is bound to a physical address space
+
+ We (OS) must map every LOGICAL ADDRESS to a PHYSICAL ADDRESS
+
+ Logical addresses essentially created via a compiler
+
+ +-------------+
+ |     IDE     | <== high-level language with symbolic addresses
+ +-------------+
+        |
+        v
+ +-------------+
+ |  compiler   | <== compiles/assembles to create
+ +-------------+      logical/relative addresses
+        |
+        v
+ +-------------+
+ |   linker    | <== incorporates/links in other
+ +-------------+      compiled modules/libraries
+        |
+        v
+*executable file* <== consists of relocatable code
+        |
+        v
+ +-------------+
+ |   loader    | <== relative addresses are mapped
+ +-------------+      to physical addresses
+
+============================================================
+
+CONTIGUOUS MEMORY ALLOCATION
+-- fit the entire process into physical memory in
+    one contiguous block
+
+-- Partitioned memory allocation can be FIXED or DYNAMIC
+
+Fixed Partitioning Scheme:
+-- Given N partitions of potentially different sizes
+-- Each process is allocated to exactly one partition
+-- Each partition is associated with one process (or marked as free)
+-- OS manages a list of free partitions and
+    a mapping of used partitions to processes
+
+ MEMORY:
+------------------
+ ................ Partition 1 (32 memory units)
+ ................
+------------------
+ ................ Partition 2 (32 memory units)
+ ................
+------------------
+ ................ Partition 3 (64 memory units)
+ ................
+ ................
+ ................
+------------------
+ etc.
+
+ MEMORY:
+------------------
+ AAAAAAAAAAA..... Partition 1 (32 memory units)
+ ................
+------------------
+ BBBBBBBBBBBBBBBB Partition 2 (32 memory units)
+ BBBB............
+------------------
+ CCCCC........... Partition 3 (64 memory units)
+ ................
+ ................
+ ................
+------------------
+
+ if process D arrives and requires 8 memory units, we cannot
+  allocate it (even though the memory is available), because
+   all partitions are in use
+
+ FRAGMENTATION is the amount of memory allocated and/or available,
+  but not used
+
+ -- Unused space inside a partition is INTERNAL FRAGMENTATION
+    since it involves space internal to a partition
+
+
+e.g., process E arrives and requires 30 memory units, then
+      process F arrives and requires 40 memory units
+
+ MEMORY:
+------------------
+ AAAAAAAAAAA..... Partition 1 (32 memory units)
+ ................
+------------------
+ ................ Partition 2 (32 memory units)
+ ................
+------------------
+ ................ Partition 3 (64 memory units)
+ ................
+ ................
+ ................
+------------------
+
+How do we select a process to place into a partition?
+-- use a queue for each partition
+-- use one master queue
+-- either way, processes assigned to smallest partition
+    that's large enough to fit the given process
+
+-- too much internal fragmentation.....!
+
+
+
+
+
+
+Dynamic Partitioning Scheme:
+-- Given the ability to allocate partitions of any
+    requested size on demand dynamically
+
+ MEMORY:
+------------------
+ AAAAAAAAAABBBBBB   The set of A's defines one partition,
+ BBCCCCCCCCCCCCCC    the set of B's defines another partition, etc.
+ CCCCDDDDDDFFFFFF
+ GGGGGGGGGGGG....
+ ................
+ ................
+ ................
+ ................
+ ................
+ ................
+ ................
+------------------
+
+ MEMORY:
+------------------
+ AAAAAAAAAA......   The set of A's defines one partition,
+ ..CCCCCCCCCCCCCC    the set of B's defines another partition, etc.
+ CCCC......FFFFFF
+ GGGGGGGGGGGG....
+ ................   The set of free partitions is:
+ ................   -- partition 1 of size 8
+ ................   -- partition 2 of size 6
+ ................   -- partition 3 of size 116
+ ................
+ ................ <== all unused memory (the '.' characters)
+ ................      is EXTERNAL FRAGMENTATION
+------------------
+
+ e.g., process H arrives and requires 5 memory units
+
+Algorithms for placing a newly arrived process P into
+ a dynamically allocated partition:
+
+ -- First-Fit algorithm scans from the "top" of memory
+    until it finds a partition to fit process P
+
+             MEMORY:
+            ------------------
+             AAAAAAAAAAHHHHH.
+             ..CCCCCCCCCCCCCC
+             CCCC......FFFFFF
+             GGGGGGGGGGGG....
+
+ -- Next-Fit algorithm scans from the most recently
+    allocated partition until if finds a partition
+    to fit process P
+
+             MEMORY:
+            ------------------
+             AAAAAAAAAA......
+             ..CCCCCCCCCCCCCC
+             CCCC......FFFFFF
+             GGGGGGGGGGGGHHHH
+             H...............
+             ................
+             ................
+             ................
+             ................
+             ................
+             ................
+            ------------------
+
+ -- Best-Fit algorithm allocates process P to the
+     smallest free partition that's big enough to
+     fit process P
+
+             MEMORY:
+            ------------------
+             AAAAAAAAAA......
+             ..CCCCCCCCCCCCCC
+             CCCCHHHHH.FFFFFF
+             GGGGGGGGGGGG....
+             ................
+
+
+Another example:
+
+ process G arrives and requires 5 memory units
+
+ MEMORY:
+ AAAAAAAAAAAAABBBBBBBBBBBBCCCCCCCC..DDDDDDDDDDD...EEEEEEEEE.FFFFFFFFFFFFFFFF
+
+ COMPACTION or DEFRAGMENTATION is required:
+ AAAAAAAAAAAAABBBBBBBBBBBBCCCCCCCCDDDDDDDDDDDEEEEEEEEEFFFFFFFFFFFFFFFF......
+
+ Defragmentation requires relocatable code
+
+ Dynamic relocation
+ -- when a process is blocked (suspended) doing I/O....
+
+
+
+Noncontiguous Memory Allocation
+
+ process G arrives and requires 5 memory units
+
+ MEMORY:
+ AAAAAAAAAAAAABBBBBBBBBBBBCCCCCCCCGGDDDDDDDDDDDGGGEEEEEEEEE.FFFFFFFFFFFFFFFF
+                                  ^^           ^^^
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

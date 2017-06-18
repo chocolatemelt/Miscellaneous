@@ -1,0 +1,10 @@
+# Makefile for Lab 9
+CC = gcc
+CFLAGS = -g -Wall
+LDFLAGS =
+lab9: main.o trig.o
+	${CC}	${CFLAGS} main.o trig.o -o $@ ${LDFLAGS}
+clean:
+	rm lab9 *.o
+main.o: pi.h trig.h
+trig.o: trig.h

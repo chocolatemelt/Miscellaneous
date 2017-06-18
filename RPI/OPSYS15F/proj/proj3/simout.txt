@@ -1,0 +1,42 @@
+Algorithm SRT and First-Fit
+-- average CPU burst time: 403.85 ms
+-- average wait time: 168.15 ms
+-- average turnaround time: 591.00 ms
+-- total number of context switches: 19
+-- total defrag time: 0
+-- percent time defragging: 0.00%
+Algorithm SRT and First-Fit
+-- average CPU burst time: 403.85 ms
+-- average wait time: 168.15 ms
+-- average turnaround time: 591.00 ms
+-- total number of context switches: 19
+-- total defrag time: 0
+-- percent time defragging: 0.00%
+Algorithm SRT and First-Fit
+-- average CPU burst time: 403.85 ms
+-- average wait time: 168.15 ms
+-- average turnaround time: 591.00 ms
+-- total number of context switches: 19
+-- total defrag time: 0
+-- percent time defragging: 0.00%
+Algorithm RR and First-Fit
+-- average CPU burst time: 403.85 ms
+-- average wait time: 147.92 ms
+-- average turnaround time: 574.77 ms
+-- total number of context switches: 23
+-- total defrag time: 0
+-- percent time defragging: 0.00%
+Algorithm RR and First-Fit
+-- average CPU burst time: 403.85 ms
+-- average wait time: 441.54 ms
+-- average turnaround time: 914.38 ms
+-- total number of context switches: 69
+-- total defrag time: 0
+-- percent time defragging: 0.00%
+Algorithm RR and First-Fit
+-- average CPU burst time: 403.85 ms
+-- average wait time: 441.54 ms
+-- average turnaround time: 914.38 ms
+-- total number of context switches: 69
+-- total defrag time: 0
+-- percent time defragging: 0.00%

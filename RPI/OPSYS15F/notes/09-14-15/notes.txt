@@ -1,0 +1,96 @@
+[09/14/2015]
+
+Project 1 Clarifications etc.
+
+(1) LMS upload/submission link will be posted after class.
+
+(2) Processes terminate after their last CPU burst
+    (i.e., no I/O to perform after last CPU burst).
+
+(3) Full sample output posted for Project 1.
+
+(4) If a process has multiple CPU bursts, but I/O time
+    is zero, what happens?
+
+    Ignore this case; this would be written in the input
+    file as one line containing the sum of CPU bursts
+    as one CPU burst.
+
+    i.e., assume that I/O time is non-zero when the
+     number of CPU bursts is greater than one.
+
+(5) Error handling: check command-line arguments, and
+    assume that each non-# line contains four integers
+    separated by '|' characters.
+
+    In general, error case: display error message to
+    stderr (via fprintf()) and terminate the simulation
+
+(6) You can use a command-line argument to specify
+    filename, but it MUST be optional; assume filename
+    is simply "processes.txt" in current working directory.
+
+=========================================================
+
+C vs C++
+
+ char name[100];
+ sprintf( name, "David Goldschmidt" );
+
+         +------------------------+
+   name: |David Goldschmidt\0     |
+         +------------------------+
+                           ^^
+                        single '\0' character
+
+
+
+ pass-by-value and pass-by-reference
+
+ C++:     void func( int & a, int & b ) { a = 5; }
+
+          main() { int x = 4, y = 3;  func( x, y );
+
+                   cout >> x >> " and " >> y >> endl; }
+
+          OUTPUT:  5 and 3
+
+
+ C:       void func( int * a, int * b ) { *a = 5; }
+
+          main() { int x = 4, y = 3;  func( &x, &y );
+
+                   printf( "%d and %d \n", x, y ); }
+
+          OUTPUT:  5 and 3
+
+
+=========================================================
+
+CPU Scheduling and Context Switching
+
+Process A is currently using the CPU
+
+Process B is next in the ready queue
+
+When a context switch occurs, a Process Control Block (PCB)
+ for the process A gets saved, then the PCB for Process B
+  is loaded/restored
+
+PCB includes contents of the registers, program counter (PC).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

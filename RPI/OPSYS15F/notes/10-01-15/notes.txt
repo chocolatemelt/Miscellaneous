@@ -1,0 +1,31 @@
+[10/01/2015]
+
+Project 2
+
+-- If while process A is context switching, process B arrives
+    and (based on the given algorithm) should preempt process A,
+     then process A should complete its context switch, then
+      immediately be preempted by process B
+
+
+
+pipe() example....
+
+   ....we can send any bytes via the pipe
+
+   double answer = 1.2354;
+
+   write( p[1], &answer, sizeof( double ) );
+
+
+ bash$ ps -ef | grep goldsd
+
+   this will create two child processes; one is "ps -ef";
+    the other is "grep goldsd"
+
+   there's a pipe connecting the two....
+
+   ....such that the output of the ps command is the input to the grep command
+
+
+

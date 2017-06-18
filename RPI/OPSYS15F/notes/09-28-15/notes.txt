@@ -1,0 +1,125 @@
+[09/28/2015]
+
+Project 2 specifications updated on the course website....
+
+=================================================================
+
+CPU Scheduling
+
+assumption is always that when there's a "tie" that the
+ tie be broken by process number (pid) order
+
+ pid   burst time     arrival time
+  P1     18 ms           0
+  P2      5 ms           0
+  P3      2 ms           2 ms
+  P4     10 ms           4 ms
+
+in general, turnaround time is burst time plus wait time
+ (BUT this is only if we ignore context switch time)
+
+FCFS (nonpreemptive)
+   |
+P1 >XXXXXXXXXXXXXXXXXX.
+P2 >                  XXXXX.
+P3 | >                     XX.
+P4 |   >                     XXXXXXXXXX.
+   +---------------------------------------->
+             11111111112222222222333333
+   012345678901234567890123456789012345
+
+
+ SJF (nonpreemptive)
+   |
+P1 >                 XXXXXXXXXXXXXXXXXX.
+P2 >XXXXX.                                   P2 had 5 ms turnaround time
+P3 | >   XX.                                    and 0 ms wait time.
+P4 |   >   XXXXXXXXXX.                       P3 had 5 ms turnaround time
+   +---------------------------------------->   and 3 ms wait time.
+             11111111112222222222333333
+   012345678901234567890123456789012345
+
+
+ SRT (preemptive)
+   |
+P1 >                 XXXXXXXXXXXXXXXXXX.
+P2 >XXp XXX.                                 P2 had 7 ms turnaround time
+P3 | >XX.                                       and 2 ms wait time.
+P4 |   >   XXXXXXXXXX.                       P3 had 2 ms turnaround time
+   +---------------------------------------->   and 0 ms wait time.
+             11111111112222222222333333
+   012345678901234567890123456789012345
+
+
+ Priority (nonpreemptive)  NO AGING
+   |
+P1 >               XXXXXXXXXXXXXXXXXX.
+P2 >XXXXX.
+P3 | >                               XX.
+P4 |   > XXXXXXXXXX.
+   +---------------------------------------->
+             11111111112222222222333333
+   012345678901234567890123456789012345
+
+ Priority (preemptive)  NO AGING
+   |
+P1 >               XXXXXXXXXXXXXXXXXX.
+P2 >XXXXp         X.
+P3 | >                               XX.
+P4 |   >XXXXXXXXXX.
+   +---------------------------------------->
+             11111111112222222222333333
+   012345678901234567890123456789012345
+
+
+  RR (preemptive)  time slice 2 ms
+   |
+P1 >XXp XXp     XXp  XXp XXp XXp XXXXXX.
+P2 >  XXp   XXp   X.
+P3 | >    XX.
+P4 |   >      XXp  XXp XXp XXp XX.
+   +---------------------------------------->
+             11111111112222222222333333
+   012345678901234567890123456789012345
+
+ pid   burst time     arrival time    priority (0 is highest)
+  P1     18 ms           0              2
+  P2      5 ms           0              1
+  P3      2 ms           2 ms           2  (this priority might age higher)
+  P4     10 ms           4 ms           0
+
+Q: P1 P2
+Q: P2
+Q: P1 P3       at time 2 ms
+Q: P3 P2 P4    at time 4 ms
+Q: P2 P4 P1
+Q: P4 P1
+Q: P1 P2
+Q: P2 P4
+
+
+============================================================
+
+Inter-Process Communication (IPC)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

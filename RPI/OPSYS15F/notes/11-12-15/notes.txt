@@ -1,0 +1,322 @@
+[11/12/2015]
+
+PAGING - Noncontiguous Memory Allocation Scheme
+
+-- page size?
+-- the smaller the page size, the less internal fragmentation
+-- best case, internal fragmentation is zero
+-- worst case, internal fragmentation is K-1, where K is the page size
+-- but the smaller the page size, the larger number of pages required
+    and therefore larger page tables are required
+
+    -- and also less advantages gained from principle of locality
+
+
+-- we (programmers) waste space all the time!   carve out large arrays
+   (e.g., 1024-byte char array for reading lines of input)
+
+   #define MAX 128
+
+   int j, k;
+   int data[MAX][MAX]; 
+     /* stored as data[0][0], data[0][1], data[0][2], etc.
+        each row takes one page, say */
+
+   for ( j = 0 ; j < MAX ; j++ )    // require MAX (128) page faults
+     for ( k = 0 ; k < MAX ; k++ )
+       data[j][k] = INITIALIZER;
+
+   for ( k = 0 ; k < MAX ; k++ )    // require MAX*MAX (16384) page faults
+     for ( j = 0 ; j < MAX ; j++ )
+       data[j][k] = INITIALIZER;
+
+
+-- many unused or rarely used sections of code
+
+-- each user program uses less physical memory, allowing the
+    degree of multiprogramming to be higher (increased CPU
+     utilization and throughput)
+
+
+Virtual Memory
+-- Not all pages/segments of a process are needed simultaneously
+    (or nearly simultaneously) during process execution
+
+-- therefore, physical address space is (much) smaller than
+    logical/virtual address space
+
+-- virtual address space essentially exists on disk
+
+-- page fault results from a memory access that requires a page
+    to be read from disk (i.e., swapped in)
+
+-- demand paging (also prepaging) to swap in from disk
+
+-- note that this requires synchronization, i.e., we're allocating
+    a resource and cannot allocate the same resource (frame) to
+     more than one consumer (process)
+
+
+Given the page fault rate p is in the range [0.0,1.0]
+-- if p is 0.0, no page faults occur
+-- if p is 1.0, every page request is a page fault
+-- typically p is very low
+
+effective memory access time
+
+ EMAT = (1 - p) x  physical-memory-access-time  +
+
+           p    x  ( page-fault-overhead + swap-page-out + swap-page-in +
+                       restart-overhead )
+
+
+ given memory access time is 200ns
+   and average page fault service time is 8ms
+
+ EMAT = (1 - p) x  200ns  +  p x 8ms
+
+      = 200 - 200 p  +  p x 8000000   =   200ns + 7,999,800 p
+
+
+ EMAT is directly proportional to the page fault rate
+
+ if one access out of 1000 causes a page fault (p = 0.001),
+  EMAT is 8200ns (8.2 microsec)
+
+
+ to ensure performance degradation less than 10 percent, we need
+
+  220 > 200 + 7,999,800 p
+   20 > 7,999,800 p
+    p < 0.0000025
+
+  i.e., fewer than one access out of 399,990 can cause a page fault
+
+
+Replacement policy
+-- static paging algorithms (i.e., frame allocation is STATIC or FIXED,
+    meaning the number of frames allocated to a process is fixed)
+
+FIFO is simplest replacement algorithm
+-- victim page is the one that has been in memory the longest,
+    i.e., the oldest page
+
+ page reference stream (for a given process):
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+--------------------------------------------
+   1 1 1 1 1 2 2 3 5 1 6 6 2 5 5 3 3 1 6 2   NOTE that pages do not
+   . 2 2 2 2 3 3 5 1 6 2 2 5 3 3 1 1 6 2 4    actually move to
+   . . 3 3 3 5 5 1 6 2 5 5 3 1 1 6 6 2 4 3     different frames !!!
+--------------------------------------------
+   * * *     *   * * * *   * *   *   * * * <== 14 page faults
+
+FIFO is the worst algorithm -- why?  does not adhere to process's locality
+
+increase to 4-frame memory (better, right?)
+
+TO DO: repeat FIFO with a 4-frame memory on above page reference stream
+
+-- does an increase in frames guarantee fewer page faults
+    (or least break even?)
+
+  1 2 3 4 1 2 5 1 2 3 4 5
+---------------------------
+  1 1 1 2 3 4 1 1 1 2 5 5
+  . 2 2 3 4 1 2 2 2 5 3 3
+  . . 3 4 1 2 5 5 5 3 4 4
+---------------------------
+  * * * * * * *     * *   <== 9 page faults
+
+  1 2 3 4 1 2 5 1 2 3 4 5
+---------------------------
+  1 1 1 1 1 1 2 3 4 5 1 2
+  . 2 2 2 2 2 3 4 5 1 2 3
+  . . 3 3 3 3 4 5 1 2 3 4
+  . . . 4 4 4 5 1 2 3 4 5
+--------------------------- 
+  * * * *     * * * * * * <== 10 page faults
+
+-- Belady's anomaly
+
+
+OPT
+-- Optimal algorithm based on future page references
+   -- we cannot know the future :-(
+
+ page reference stream (for a given process):
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+--------------------------------------------
+   1 1 1 1 1 1 1 1 6 6 6 6 6 6 6 6 6 2 2 2
+   . 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 4 4
+   . . 3 3 3 5 5 5 5 5 5 5 3 3 3 3 3 3 3 3
+--------------------------------------------
+   * * *     *     *       * *       * *   <== 9 page faults
+
+
+
+LRU
+-- replaces the page that has not been used for the
+    longest period of time
+
+-- place each page reference at the bottom...
+
+ page reference stream (for a given process):
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+--------------------------------------------
+   1 1 1 1 3 2 1 5 2 1 6 2 5 6 6 1 3 6 1 2
+   . 2 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4
+   . . 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+--------------------------------------------
+   * * *     *     *   *   * *       * * * <== 11 page faults
+
+
+OPT and LRU are called stack algorithms
+-- they do not suffer from Belady's anomaly
+-- well-behaved trend in the number of page faults
+    for changes in the number of allocated frames
+-- as the number of allocated frames increases,
+    the number of page faults decreases
+
+
+LFU (least frequently used)
+-- a count is maintained for each page in a frame of physical memory
+-- count is set to 0 each time a page is brought into a frame
+
+ page reference stream (for a given process):
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+--------------------------------------------
+   1 1 1 1 3 5 5 5 6 6 5 6 3 3 3 6 6 6 4 3
+   . 2 2 3 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+   . . 3 2 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+--------------------------------------------
+   * * *     *     *   * * *     *     * * <== 11 page faults
+
+-- pages 2 and 1 get "stuck" in memory due to their
+    high counts (and it's difficult to transition from
+     one locality to another)
+
+-- most frequently used (MFU) algorithm?
+
+ TO DO: work with MFU algorithm to determine if it has merit....
+
+==============================================================
+
+-- dynamic paging algorithms (i.e., frame allocation is DYNAMIC,
+    meaning the number of frames allocated to a process could change)
+
+Working Set Algorithm
+-- At the current page reference, use DELTA number of most recent
+    page references to define the working set (i.e., the set of pages
+     that should be in physical memory, hopefully the locality)
+
+
+ page reference stream (for a given process):
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+
+example with DELTA of 3:
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+   ^   ^
+   |<->|
+     working set is { 1, 2, 3 }
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+     ^   ^
+     |<->|
+       working set is { 2, 3 }
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+       ^   ^
+       |<->|
+         working set is { 1, 2, 3 }
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+         ^   ^
+         |<->|
+           working set is { 1, 2, 5 }
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+           ^   ^
+           |<->|
+             working set is { 1, 2, 5 }
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+             ^   ^
+             |<->|
+               working set is { 1, 2, 5 }
+
+
+example using delta of 6:
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+   ^         ^
+   |<------->|
+      working set is { 1, 2, 3, 5 }
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+     ^         ^
+     |<------->|
+        working set is { 1, 2, 3, 5 }
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+       ^         ^
+       |<------->|
+          working set is { 1, 2, 3, 5 }
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+         ^         ^
+         |<------->|
+            working set is { 1, 2, 5, 6 }
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+           ^         ^
+           |<------->|
+              working set is { 1, 2, 5, 6 }
+
+
+   1 2 3 2 1 5 2 1 6 2 5 6 3 1 3 6 1 2 4 3
+                         ^         ^
+                         |<------->|
+                            working set is { 1, 3, 6 }
+
+
+Page Fault Frequency Algorithm
+
+
+
+
+
+THRASHING
+
+-- A process is in a state of THRASHING if it's spending
+    more time paging than executing
+    -- i.e., it's swapping pages in and out from disk
+    -- too many page faults and little to no computation
+        is carried out by the process(es)
+
+-- CPU utilization and throughput decrease rapidly when
+    thrashing occurs
+
+-- in earlier operating systems, OS monitors CPU utilization
+    and if too low, admits more processes into the system
+
+    -- when thrashing occurs, CPU utilization is low, so
+        degree of multiprogramming is increased, more paging, etc.
+
+                                                            x-|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

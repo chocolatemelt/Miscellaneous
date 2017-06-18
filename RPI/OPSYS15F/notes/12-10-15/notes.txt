@@ -1,0 +1,241 @@
+[12/10/2015]
+
+Project 4 -- no submissions after 11:59PM Tuesday 12/15
+-- but NO late penalty  (-:
+
+-- goal is to grade Project 4 by Monday 12/21
+-- re-grade requests/questions through Wednesday 12/23
+
+-- for the simulation portion, use 'A' through 'Z'
+   (and assume that no more than 26 uniquely named
+   files will be present in the system at any given
+   time); i.e., reuse letters as need be
+
+============================================================
+
+Final Exam
+-- Sample questions posted
+-- Goal is for the length to be comparable to the midterm exam
+-- Coverage: comprehensive
+
+-- what's NOT on the final exam:
+   -- netprog
+   -- disk access and I/O topics
+
+-- No calculators (leave answers in equation form)
+-- Good mix of C systems programming and OpSys theory 50%/50%
+
+   -- fork(), pipe(), fd table, dup2(), open(), close(),
+      read(), write(), wait(), pthreads
+
+   -- Exponential averaging (sample question #11)
+
+   -- CPU short-term scheduling
+
+   -- Contiguous Memory Allocation
+
+     e.g.,  AAAA...BBBCCCC
+
+     after process F is allocated, we have AAAAFFF.BBBCCCC
+                                                 ^^
+                                              consider this as
+                                         F taking up part of that 1MB spot
+                                           in the diagram
+
+     3MB - 2,987,642 <== unused space (external fragmentation)
+
+     the dynamically allocated partition is of size 2,987,642 bytes
+
+
+
+  -- Noncontiguous Memory Allocation
+
+ EMAT = 0.84 x (15ns + 100ns)  +  0.16 x (15ns + 100ns + 100ns)
+               ^^^^^^^^^^^^^^            ^^^^^^^^^^^^^^^^^^^^^^
+                 TLB HIT                   TLB MISS (page table lookup)
+
+
+=======================================================
+
+Homework 5 (and midterm exams) available for pick-up
+
+      9
+1.   2  = 512 pages
+
+      23
+2.   2   = 8,388,608 bytes
+
+      23
+3.   2   = 8,388,608 bytes
+
+              |
+4.   000001001|01101111000001000001110
+              |
+      page #  |   page offset
+
+     page #:  9
+
+     page offset: 3,637,774
+
+5. 12,582,912 bytes
+
+     22                    22
+    2   = 4,194,304     ( 2   x 3 ) = 12,582,912
+
+
+    32
+6. 2
+
+    14
+   2    page number
+
+    18
+   2    page offset
+
+
+    14    18    32
+   2   x 2   = 2
+
+
+7. OPT   9 page faults
+
+8. LRU  13 page faults
+
+
+
+
+
+QUEUING THEORY
+
+-- how do we evaluate an operating system
+   (or computer system or network-based system)?
+
+   -- measure current performance / benchmarking
+      (important to use the same inputs)
+
+   -- tune parameters, repeat above measurements
+
+   -- construct models, then create simulators
+
+   -- the above requires a large amount of effort,
+      and we might end up with incorrect/inaccurate
+      conclusions if our inputs are "no good"
+
+   -- construct analytic models (though we need
+      to be careful not to make too many assumptions
+      or "cut too many corners")
+
+
+
+-- SINGLE QUEUE
+
+   -- in the ARRIVAL PROCESS, jobs arrive intermittently
+      at times that are not known in advance; the external
+      population might be finite or infinite
+
+   -- typically, QUEUE CAPACITY is assumed to be able to
+      accommodate any number of jobs; sometimes, we may
+      limit queue capacity (to better reflect reality)
+
+   -- the QUEUE DISCIPLINE describes the specific
+      scheduling algorithm used to select jobs
+      (i.e., CPU short-term scheduling)
+
+   -- in the SERVICE PROCESS, there are one or more
+      processors performing the jobs (i.e., single CPU
+      versus multicore)
+
+-- QUEUING THEORY NOTATION
+
+   -- We describe a queue as  A/B/c/k/m/Z  <== Kendall notation
+
+      A is the arrival process
+      B is the service process
+      c is the number of (identical) servers/processors
+      k is the maximum queue size (assumed to be infinite)
+      m is the number of jobs (assumed to be infinite)
+      Z is the name of the queue discipline (assumed to be FCFS)
+
+   -- We consider M/M/1 queues (where M means Memoryless)
+
+      -- The first M indicates that the arrival process
+         follows a POISSON DISTRIBUTION, meaning it is memoryless
+         and has a constant average inter-arrival time
+
+      -- The second M indicates that the service process
+         is memoryless and has an exponential service time
+         distribution (i.e., the time required to service
+         a job has an exponential probability distribution)
+
+      -- The 1 means one server
+
+-- POISSON DISTRIBUTION
+
+   -- Uniform distribution (all outcomes are equally likely)
+
+   -- Normal (or bell curve) distribution
+
+   -- Exponential (or Poisson) distribution is the only
+      continuous random distribution that is memoryless
+
+-- Arrivals in M/M/1 queue occur at rate lambda
+
+                                       1
+   -- average inter-arrival time is --------
+                                     lambda
+
+
+							  1
+-- Service times are governed by rate parameter mu, with ----
+                                                          mu
+   being the service time
+
+
+
+The probability of n arrivals in time interval [0,t] is
+
+  P (t) = Prob[N(t) = n]
+   n
+
+  P (t) >= 0
+   n
+
+  P (0) = 1
+   0
+
+  P (0) = 0 for n > 0
+   n
+
+
+  inf
+  ---
+  \
+   > P (t) = 1
+  /   n
+  ---
+  n=0
+
+Distribution of inter-arrival times
+-- assume arrival has just occurred at time 0
+-- model the time of the next arrival
+-- Probability distribution of inter-arrival times T is
+
+            inf
+            ---
+            \
+  F(t) =     > P (t)  -  P (t)
+            /   n         0
+            ---
+            n=0
+
+                          -(lambda)(t)
+  F(t) =     1        -  e
+
+-- the mean is 1 / lambda
+
+-- a POISSON PROCESS always has an exponential
+   inter-arrival time distribution
+
+
+
+

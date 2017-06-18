@@ -1,0 +1,192 @@
+[09/17/2015]
+
+
+fork.c example.....
+
+PARENT: my child's pid is 22156
+PARENT: x is 0
+CHILD: happy birthday! my pid is 22156
+CHILD: x is 15
+
+this last line is always last:
+PARENT: child 22156 terminated...successfully with exit status 12
+
+the 2 parent output lines must appear
+ in the given relative order
+
+the 2 child output lines must appear
+ in the given relative order
+
+but the set of 2 parent output lines and the
+ set of 2 child output lines could be interleaved...
+
+CHILD: happy birthday! my pid is 22156
+CHILD: x is 15
+PARENT: my child's pid is 22156
+PARENT: x is 0
+
+CHILD: happy birthday! my pid is 22156
+PARENT: my child's pid is 22156
+CHILD: x is 15
+PARENT: x is 0
+
+PARENT: my child's pid is 22156
+CHILD: happy birthday! my pid is 22156
+CHILD: x is 15
+PARENT: x is 0
+
+If a parent process terminates (or a process
+ internal to the entire process tree), then
+  the child process (and its entire subtree)
+   gets inherited by pid 1
+
+
+When a child process terminates, its status
+ *must* be acknowledged via its parent process
+  (which might be pid 1) via wait()
+
+   If not (until wait() is called), the process
+    is a zombie process (or defunct)
+
+
+
+   +--------+
+   | parent |
+   |  proc  |
+   |        |
+   | fork() |          +----------+
+   |        |          |  child   |
+   | wait() |          |   proc   |
+   +--------+          |          |
+                       +----------+
+
+                     child process terminates
+
+                     SIGCHLD signal is generated
+
+
+CPU Scheduling
+
+-- A scheduling system enables one process to use the CPU
+    while other processes are waiting in the ready queue
+     to use the CPU
+
+   -- enables us to make more efficient/full use of the CPU
+
+-- The challenge is to have the overall OS as "efficient" and also "fair"
+    as possible
+
+   -- efficient in terms of CPU usage
+
+   -- fair from the perspective of the individual processes
+
+
+-- The job of the CPU Scheduler is, when the CPU becomes idle, to select
+    another process from the ready queue
+
+-- CPU Scheduling Algorithms:
+
+   -- FCFS (FIFO)
+
+     pid     CPU burst time
+      1          18
+      2           3
+      3           4
+
+        +------------------+---+----+
+  FCFS: | P1               | P2| P3 |
+        +------------------+---+----+
+   t:   0                  18  21   25
+
+
+  FCFS: P1 has 0 wait time; P2 has 18 wait time; P3 has 21 wait time
+
+
+  -- Shortest Job First (SJF)
+
+        +---+----+------------------+
+   SJF: | P2| P3 | P1               |
+        +---+----+------------------+
+   t:   0   3    7                  25
+
+  SJF: P1 has 7 wait time; P2 has 0 wait time; P3 has 3 wait time
+
+
+  WAIT TIME: How much time does a process spend in the ready queue
+                (waiting for their turn with the CPU)?
+
+  TURNAROUND TIME: How much time is required for a process to complete
+                     its CPU burst, from the time it enters the ready
+                       queue through to completion
+
+  TURNAROUND TIME = WAIT TIME + CPU BURST TIME
+
+
+-- Preemption occurs when the currently running process is
+    "kicked out" of the CPU....
+
+-- CPU scheduling decisions take place under 1 of 4 conditions:
+
+   (a) When a process switches from the running state to the waiting state,
+         such as for I/O
+
+   (b) When a process switches from the running state to the ready state,
+         for example in response to an interrupt
+
+   (c) When a process switches from the waiting state to the ready state,
+         e.g., when I/O completes
+
+   (d) When a process terminates
+
+-- For conditions (a) and (d), we always schedule/select the next process
+
+-- For conditions (b) and (c), we have a choice either to continue running
+    the current process or select a different one (i.e., preemption)
+
+
+     pid     CPU burst time   arrival times
+      1          18              0
+      2           7              0
+      3           6              0
+      4           2              3
+
+      +---+--+---+-------
+ SRT: | P3|P4|P3 | etc.
+      +---+--+---+--------
+
+  P4 preempted P3 because P4 had only 2ms of burst time,
+    whereas P3 had 3ms remaining...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

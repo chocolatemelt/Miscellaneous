@@ -1,0 +1,102 @@
+[11/30/2015]
+
+Inter-Process Communication (IPC)
+-- files
+-- pipes (ps -ef | grep cutler) / (named) FIFOs
+-- shared memory
+-- message queues
+-- sockets-based IPC (multiple machines / networks )
+
+IPC requirements:
+-- synchronization
+-- application-level protocol
+-- data marshalling (for network communication)
+
+Data Marshalling:
+  04/01/2010 ==> April 1, 2010
+  04/01/2010 ==> January 4, 2010
+  YYYY-MM-DD <== 2010-04-01   2010-01-04
+
+  C:   htons() is the host-to-network-short
+       ntohl() is the network-to-host-long
+       ntohs() is the network-to-host-short
+       htonl() is the host-to-network-long
+
+
+Sockets-based communication
+
+-- a SOCKET is an endpoint for communication
+
+-- sockets-based communication can be CONNECTION-ORIENTED
+    or CONNECTIONLESS
+
+-- a SERVER creates one or more SOCKETs that it
+    will then LISTEN on for incoming client connections
+     or incoming data packets
+
+   -- the server listens on one or more specific
+       (maybe well-known) PORT numbers (2-byte values or short values)
+
+
+   -- well-known port numbers include:
+
+         21 FTP
+         22 SSH
+         25 SMTP
+         80 HTTP
+        443 HTTPS
+
+
+TCP vs UDP
+
+Transmission Control Protocol (TCP)
+-- connection-oriented
+-- reliable protocol
+-- overhead......
+
+User Datagram Protocol (UDP)
+-- connectionless
+-- unreliable protocol
+-- low overhead......
+
+UDP SERVER:
+-- socket()         create a socket (endpoint)
+-- bind()           bind to (assign) a specific port number
+                     (or let the OS assign a port number for us)
+-- getsocketname()  get socket name, port number info
+
+-- recvfrom()/sendto()    receive/send datagrams
+
+
+TCP SERVER:
+-- socket()         create a socket (endpoint)
+-- bind()           bind to (assign) a specific port number
+-- listen()         identify this socket as a TCP listener
+
+   while ( 1 )
+   {
+     accept()         block until an incoming client connection is rcvd
+
+     read()/write()  or  recv()/send()
+
+   }
+
+
+
+
+"STORE xyz.txt 14\nABCDEFGHIJKLMN" ==> "ACK\n"
+
+"STORE abc.txt 12\nABCDEFG\0\0\0\nZ" ==> "ACK\n"
+
+"READ xyz.txt 4 5\n" ==> "ACK 5\nEFGHI"
+
+"DIR\n" ==> "2\nabc.txt\nxyz.txt\n"
+
+"DELETE xyz.txt\n" ==> "ACK\n"
+
+"DIR\n" ==> "1\nabc.txt\n"
+
+"DELETE abc.txt\n" ==> "ACK\n"
+
+"DIR\n" ==> "0\n"
+

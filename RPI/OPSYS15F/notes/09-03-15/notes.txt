@@ -1,0 +1,100 @@
+[09/03/2015]
+
+PROJECT 1 .....
+
+-- Processes line up in the Ready Queue, waiting to use the CPU
+
+
+ +-------------+         Ready Queue
+ |             |         +------------------------------
+ |     CPU     <=========| 1 | 2 | 4 | 3 | ............
+ |             |         +------------------------------
+ +-------------+
+
+
+-- The next process (front of the queue) is selected and
+    uses the CPU to execute its instructions
+
+       -- this is called a CPU Burst
+
+-- After its burst is complete, the process then either
+    terminates or performs (or waits for) I/O
+
+ +-------------+         Ready Queue
+ |             | FCFS    +------------------------------
+ |     CPU     <=========| 2 | 4 | 3 | 1 | ............
+ |             |         +------------------------------
+ +-------------+                       ^
+        |                              |
+        |                              |
+        |                              |
+        |                              |
+        v                              |
+ +-----------------------------------------------------+
+ |                                                     |
+ |    I/O Subsystem                                    |
+ |                                                     |
+ +-----------------------------------------------------+
+
+-- Multiple processes can be in the I/O Subsystem at the
+    same time, simultaneously performing or waiting for
+     I/O operations to complete (typically through interrupts)
+
+=========================================================
+
+For Ubuntu download/installation:
+-- NO NEED TO RE-PARTITION YOUR HARD DRIVE!
+-- Use Ubuntu Desktop
+-- You can use Virtual Box
+     (note you might need to use 32-bit version of Ubuntu)
+-- Could download Virtual Box and select Ubuntu...
+
+ BOTTOM LINE: punt on this if you have to for Homework 1....
+
+=========================================================
+
+C
+general-purpose programming language
+economy of expression
+a high-level language, but not too high.....
+
+originally designed and implemented on UNIX
+ on a DEC PDP-11 by Dennis Ritchie
+
+C is based on BCPL and B (typeless language)
+C provides a variety of data types:
+-- char (byte), integers, floating point numbers
+-- pointers, arrays, structures (struct), unions
+-- pointers provide machine-independent address arithmetic
+
+-- no concept of strings (like in C++)
+    need system calls and libraries
+
+
+PROCESS (running program in memory):
+
+ +--------------------------+
+ |  runtime heap            | <== dynamically allocated memory
+ |      |                   |     -- the "new" keyword in C++/Java
+ |      v                   |     -- in C, malloc(), calloc(), realloc()
+ |                          |          don't forget to use free()
+ |                          |
+ |                          |
+ |      ^                   |
+ |      |                   |
+ |  runtime stack           | <== statically allocated memory
+ |--------------------------|
+ | code/data/etc.           |
+ +--------------------------+
+
+
+
+
+
+
+
+
+
+
+
+

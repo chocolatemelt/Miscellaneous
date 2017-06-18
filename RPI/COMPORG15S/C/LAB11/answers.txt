@@ -1,0 +1,10 @@
+One other bad timing scenario occurs when two writes happen simultaneously, in
+which case the value is only changed once.
+
+Increasing threads decreases real time because it splits the calculations;
+however, this means it has to run the same user code twice or more depending
+on the number of threads.
+
+Increasing the number of threads can increase real time and user time in some
+instances; this is called thrashing. This occurs when the processor spends too
+much time switching (paging) and not enough time actually executing user code.

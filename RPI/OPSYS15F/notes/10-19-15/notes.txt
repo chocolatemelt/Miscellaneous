@@ -1,0 +1,249 @@
+[10/19/2015]
+
+If you use c9.io, be VERY careful of fork bombing.....
+-- backup your code via github (or frequent downloading to your laptop)
+
+Midterm exams -- pick up Thursday as early as 10AM
+ (review in class 2PM)
+
+Final exam scheduled for Monday 12/21  11:30AM-2:30PM
+-- conflicts or 3 exams in one day, let me know....
+
+Homework 4 will be available this week
+-- same concepts as Homework 3 -- evaluate a given expression
+-- parallelization
+-- synchronization
+
+=========================================================================
+
+SYNCHRONIZATION
+
+            SHARED MEMORY
+            +----------+
+            | global x | <===== 5
+            +----------+
+
+ Process P1               Process P2
++----------+             +----------+
+|          |             |          |
+|          |             |          |  SYNCHRONIZATION PROBLEMS:
+|          |             |          |
+| local y  |             | local z  |  y is 9 and z is 10
+|          |             |          |  z is 6 and y is 10
+|----------|             |----------|  y is 10 and z is 10
+| x += 4   |             | x++      |
+| y = x    |             | z = x    |    P1: x += 4
+|----------|             |----------|    P2: x++
+|          |             |          |    P2: z = x
++----------+             +----------+    P1: y = x
+
+We've identified a CRITICAL SECTION of P1 and
+ a CRITICAL SECTION of P2
+
+....what else could go wrong....?
+
+ P1
+x += 4 =====> x = x + 4
+
+              LOAD x    ; 5
+          <context-switch-here!>
+              ADD 4
+              STORE x   ; 9
+ P2
+x++ ========> x = x + 1
+
+              LOAD x    ; 5
+              INCR
+              STORE x   ; 6
+
+
+
+ /* P1 */
+ while ( 1 )
+ {
+   execNonCriticalSection();
+   execCriticalSection();
+ }
+
+ /* P2 */
+ while ( 1 )
+ {
+   execNonCriticalSection();
+   execCriticalSection();
+ }
+
+
+A CRITICAL SECTION guarantees MUTUAL EXCLUSION
+ for one or more resources (e.g., global variable x)
+
+To synchonize processes (or threads), first identify
+ the critical sections of code
+
+ -- if process P is executing in its critical section,
+     no other processes can be executing in their
+      critical sections
+
+ -- if thread T is executing in its critical section,
+     no other threads can be executing in their
+      critical sections
+
+The OS must control access to critical sections
+ (or provide a mechanism to do so...)
+
+The OS must also guarantee PROGRESS amongst all processes
+ waiting to get into their respective critical sections of code
+
+ -- i.e., fairness
+
+ -- avoid starvation of one or more processes
+
+
+
+                        /* global or shared */
+                        int x = 5;
+                        int lock = 0;
+
+ /* P1 */                                /* P2 */
+ while ( 1 )                             while ( 1 )
+ {                                       {
+   execNonCriticalSection();               execNonCriticalSection();
+   while ( lock == 1 )   <-- TEST ---->    while ( lock == 1 )
+   {                                       {
+     /* busy wait */                         /* busy wait */
+   }                                       }
+ <<<context-switch>>>
+   lock = 1;             <-- SET ----->    lock = 1;
+   execCriticalSection();                  execCriticalSection();
+   lock = 0;  <-- relinquish the lock -->  lock = 0;
+ }                                       }
+
+
+ The 2-process solution below is Dekker's solution (or Peterson's)
+
+
+                        /* global or shared */
+                        int x = 5;
+                        int needLockP1 = 0;  /* 0 or 1 */
+                        int needLockP2 = 0;  /* 0 or 1 */
+                        int turn = P1;       /* P1 or P2 */
+
+ /* P1 */                                /* P2 */
+ while ( 1 )                             while ( 1 )
+ {                                       {
+   execNonCriticalSection();               execNonCriticalSection();
+   needLockP1 = 1;                         needLockP2 = 1;
+   turn = P2;                              turn = P1;
+
+   while ( turn == P2 &&                   while ( turn == P1 &&
+           needLockP2 == 1 )                       needLockP1 == 1 )
+   {                                       {
+     /* busy wait */                         /* busy wait */
+   }                                       }
+
+   execCriticalSection();                  execCriticalSection();
+   needLockP1 = 0;                         needLockP2 = 0;
+ }                                       }
+
+
+=======================================================================
+
+SEMAPHORE
+-- an OS construct that enables us to have synchronized access
+    to shared resource(s) (e.g., global variable x)
+
+-- special non-negative int variable
+
+-- two operations:
+
+   P() passeren (to pass) / proberen (to try)
+   wait()
+   down()
+
+   V() vrygeren (release) / verhogan (increase)
+   signal()
+   up()
+
+
+   P( semaphore S )            /* This P() operation executes
+   {                                without any interruption */
+     while ( S <= 0 )
+     {
+       /* busy wait */
+     }
+     S--;
+   }                                /* binary semaphore */
+                                    semaphore mutex = 1;
+   V( semaphore S )                 ...
+   {                                P( mutex );
+     S++;                           execCriticalSection();
+   }                                V( mutex );
+
+
+A BINARY SEMAPHORE provides mutually exclusive
+ access to a shared resource (e.g., global variable x)
+ -- initialize semaphore to 1
+ -- use P() and V() operations around the critical section(s)
+ -- possible values of the semaphore are 0 and 1
+
+A COUNTING (or GENERAL) SEMAPHORE controls access
+ to a finite number of resources
+ -- initialize semaphore to n (where n is the number of
+     resources to be shared/synchronized)
+ -- use P() and V() operations
+ -- possible values of the semaphore are 0, 1, 2, ..., n
+
+
+                 /* shared or global memory */
+                 const int n = 40;   /* size of shared array */
+                 buffer[n]
+                 semaphore empty_slots = n;
+                 semaphore used_slots = 0;
+
+ /* producer */                   /* consumer */
+ while ( 1 )                      while ( 1 )
+ {                                {
+   item = produce_next_item();      P( used_slots );
+   P( empty_slots );                item = remove_from_buffer();
+   add_to_buffer( item );           V( empty_slots );
+   V( used_slots );                 consume( item );
+ }                                }
+
+The above version/solution uses two counting semaphores to ensure 
+-- no buffer overflow in the ONE producer and
+-- no reading from an empty buffer in the ONE consumer
+
+
+
+
+                 /* shared or global memory */
+                 const int n = 40;   /* size of shared array */
+                 buffer[n]
+                 semaphore empty_slots = n;
+                 semaphore used_slots = 0;
+                 semaphore mutex = 1;
+
+ /* producer */                   /* consumer */
+ while ( 1 )                      while ( 1 )
+ {                                {
+   item = produce_next_item();      P( used_slots );
+   P( empty_slots );                  P( mutex );
+     P( mutex );                        item = remove_from_buffer();
+       add_to_buffer( item );         V( mutex );
+     V( mutex );                    V( empty_slots );
+   V( used_slots );                 consume( item );
+ }                                }
+ 
+The above version/solution uses two counting semaphores and
+ a binary semaphore to ensure
+-- no buffer overflow in any producers and
+-- no reading from an empty buffer in any consumers
+-- this version "works" for multiple producers/consumers
+
+TO DO: implement the above producer/consumer problem
+ using multiple processes, then multiple threads
+
+
+
+
+
+

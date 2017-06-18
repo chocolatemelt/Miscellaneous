@@ -1,0 +1,163 @@
+[11/16/2015]
+
+Filesystems
+
+-- Goal: data should be organized and available
+    in a convenient and efficient manner
+
+-- FILES are the basic building block
+
+-- a FILE is an abstraction that represents user data,
+    OS data, an executable, source code, a device, database,
+     directory (folder), network connections, etc.
+
+      a FILE is simply a SEQUENCE OF BYTES
+
+-- File attributes includes:
+   -- Human-readable symbolic name (with filename extension)
+   -- Type (e.g., directory, regular file, text, PDF, executable, ...)
+   -- Logical location(s) (i.e., within the filesystem hierarchy,
+                                   containing directory(ies))
+   -- Physical location (i.e., on disk)
+   -- Size (in bytes)
+   -- Protection/security/mode (i.e., rwx permissions)
+   -- Timestamps (e.g., created, last-modified, last-accessed)
+   -- number of (hard) links
+   -- etc.
+
+-- The PATHNAME (or just PATH) of a file specifies the
+    sequence of directories to traverse to locate the file
+     (logically)
+   -- an ABSOLUTE PATH starts at the root node of the filesystem /
+   -- a RELATIVE PATH start from cwd
+
+-- a LINK provides a shortcut to a file and might circumvent
+    the given directory structure (hierarchy)
+-- a SYMBOLIC LINK (symlink) is merely a shortcut
+-- a HARD LINK is indistinguishable from the original file
+
+
+-- an ACCESS METHOD describes the manner/mechanism by which
+    a process accesses data in a file
+    -- Sequential access (open, read, write, close)
+    -- Random access (open, read, write, fseek/lseek, close)
+
+STORAGE SCHEMES
+-- Storage schemes on disk are transparent to users
+-- traditionally involves cylinders, tracks, sectors, bytes
+
+Contiguous Disk Space Allocation Scheme
+-- files are allocated to contiguous blocks of disk space
+
+e.g., four files on disk:
+
+   AAABBCCCD.............
+
+   file B outgrows (doubles) its space and is reallocated:
+
+   AAA..CCCDBBBB.........
+
+   file D outgrows (triples) its space and is reallocated:
+
+   AAA..CCC.BBBBDDD......
+
+   defragmentation/compaction eventually required:
+
+   AAACCCBBBBDDD.........
+      <<<<<<<<<<<<<<<<
+
+Clustered Disk Space Allocation Scheme
+-- files are allocated to clusters of contiguously allocated
+    disk space on an as-needed (on-demand) basis
+
+e.g., four files on disk:
+
+   AAABBCCCD.............
+
+   file B outgrows (doubles) its space and is reallocated:
+
+   AAABBCCCDBB...........
+
+   file D outgrows (triples) its space and is reallocated:
+
+   AAABBCCCDBBDD.........
+
+   file B is deleted:
+
+   AAA..CCCD..DD.........
+
+
+potential disadvantages:
+-- we still could benefit from defragmentation/compaction
+-- more bookkeeping is required
+-- file access might cross cluster boundaries, causing slower read times
+
+   AAABBCCCDBBDD.........
+      ^^    ^^
+
+
+How does the OS keep track of where each cluster is?
+
+(1) Use a linked approach, where each cluster has a pointer
+    (at the end of the cluster) to the next cluster
+
+ +-----------+   +-----------+   +-----------+
+ | DIRECTORY |==>| Cluster 1 |==>| Cluster 2 |==> etc.
+ |   ENTRY   |   +-----------+   +-----------+
+ +-----------+
+
+  -- Okay for sequential access, but not for random access
+
+
+(2) Use an indexed approach, where a single table maintains
+     pointers to each individual cluster
+
+ +-----------+     +------------+
+ | DIRECTORY |====>| FILE INDEX |
+ |   ENTRY   |     | BLOCK      |
+ +-----------+     |            |    +-----------+
+                   |   Cluster 1|===>| Cluster 1 |
+                   |            |    +-----------+
+                   |            |
+                   |            |    +-----------+
+                   |   Cluster 2|===>| Cluster 2 |
+                   |            |    +-----------+
+                   |     etc.   |
+
+
+In Linux, file information is stored in an index node (inode),
+ containing:
+ -- mode (permissions) and file type
+ -- number of hard links to the file
+ -- file owner's userid and groupid
+ -- size (in bytes)
+ -- last access, last modified times
+ -- number of blocks (clusters) allocated to the file
+ -- pointers to the 12-15 (typically 15) blocks
+ -- pointers to three additional blocks of pointers....
+     (single/double/triple indirect)
+
+    http://www.linux-mag.com/id/8658
+
+e.g., given a block size of X, what's the maximum file size?
+
+      X = 8192 bytes
+
+      direct blocks: 15 x 8192 = 122,880 bytes
+
+      single indirect: 122,880 + (1024 x 8192) = 8,511,488 bytes
+
+                                        2
+      double indirect: 8,511,488 + (1024  x 8192) = 8,598,446,080 bytes
+
+                                            3
+      triple indirect: 8,598,446,080 + (1024  x 8192)
+
+                             = 8,804,691,468,288 bytes
+
+other questions:
+-- how many inodes do we need for file size Y?
+-- what's the maximum file size at each level of indirection?
+
+
+

@@ -1,0 +1,36 @@
+PARENT: File 'hw2-sample-input.txt' contains 909 bytes
+PARENT: ... and will be processed via 22 child processes
+CHILD 42942 CHUNK: Once when a Lion was asleep a little Mouse
+CHILD 42943 CHUNK:  began running up and down upon him;
+this 
+CHILD 42944 CHUNK: soon wakened the Lion, who placed his huge
+CHILD 42945 CHUNK:  paw upon him, and opened his
+big jaws to 
+CHILD 42946 CHUNK: swallow him. "Pardon, O King," cried the l
+CHILD 42947 CHUNK: ittle Mouse: "forgive me
+this time, I shal
+CHILD 42948 CHUNK: l never forget it: who knows but what I ma
+CHILD 42949 CHUNK: y be able to do you
+a turn some of these d
+CHILD 42950 CHUNK: ays?" The Lion was so tickled at the idea 
+CHILD 42951 CHUNK: of the Mouse
+being able to help him, that 
+CHILD 42952 CHUNK: he lifted up his paw and let him go. Some 
+CHILD 42953 CHUNK: time
+after the Lion was caught in a trap, 
+CHILD 42954 CHUNK: and the hunters, who desired to carry him
+
+CHILD 42955 CHUNK: alive to the King, tied him to a tree whil
+CHILD 42956 CHUNK: e they went in search of a wagon
+to carry 
+CHILD 42957 CHUNK: him on. Just then the little Mouse happene
+CHILD 42958 CHUNK: d to pass by, and seeing
+the sad plight in
+CHILD 42959 CHUNK:  which the Lion was, sent up to him and so
+CHILD 42960 CHUNK: on gnawed away the
+ropes that bound the Ki
+CHILD 42961 CHUNK: ng of the Beasts. "Was I not right?" said 
+CHILD 42962 CHUNK: the little Mouse.
+         "LITTLE FRIENDS
+CHILD 42963 CHUNK:  MAY PROVE GREAT FRIENDS."
+

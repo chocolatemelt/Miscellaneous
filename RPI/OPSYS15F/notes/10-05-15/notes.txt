@@ -1,0 +1,52 @@
+[10/05/2015]
+
+THREADS
+
+POSIX threads (Pthreads)
+-- standard for multi-threaded model used/supported
+    on *nix systems
+-- set of APIs
+-- gcc -Wall main.c -pthread
+
+Why "thread" term is used?
+-- continuous
+-- sequence
+
+A single process can be thought of as a "main thread" running with:
+-- an address space
+-- file descriptors (fd table)
+-- instructions to execute (program counter)
+-- data to process (stack/heap)
+-- etc.
+
+A multi-threaded process has a "main thread" and other
+ "threads of execution" that SHARE the encompassing process's
+  address space, fds, instructions to execute, data, etc.
+
+Thread-safe
+-- code can be called from multiple threads in a single process
+    without SYNCHRONIZATION or other problems occurring
+
+Re-entrant functions
+-- e.g., strtok(), readdir()
+
+
+===========================================
+
+C and pthreads
+
+Threads do NOT have:
+-- their own file descriptor tables
+-- their own address space
+
+
+
+
+
+
+
+
+
+
+
+

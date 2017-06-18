@@ -1,0 +1,198 @@
+[09/24/2015]
+
+-- No cygwin (use http://c9.io instead)
+
+Homework 2
+
+-- exit( EXIT_SUCCESS );
+
+
+   printf( "woeifjweoifjwefioj\n" );
+   fflush( NULL );
+    /* ensure that all output to stdout is flushed
+        before calling fork() */
+
+   fork();
+
+   etc.
+
+
+========================================================
+
+CPU Scheduling
+
+-- The job of the Scheduler is to decide the order in which
+    processes are executed by the CPU
+
+-- Scheduling algorithm should balance efficiency and fairness
+    (also minimize overhead)
+
+-- Starvation == Indefinite Blocking
+
+
+ALGORITHM   PREEMPTION?    ADVANTAGE(S)          DISADVANTAGE(S)
+
+FCFS        Nonpreemptive  Easy to implement     Long wait times
+                           Minimal overhead      Very long average wait times
+
+SJF         Nonpreemptive  Optimal (fastest)     Must predict CPU burst times
+                           (least average        Starvation (processes with
+                              wait time)            large CPU burst times)
+
+SRT         Preemptive
+
+Priority    Either         Finer control over    Starvation
+                            process order
+
+PWA                        Addresses the
+                            starvation problem
+
+RR          Preemptive     Fairness              Longer average wait times
+            (based on      No starvation         Depends on timeslice
+              timeslice)                         Increases overhead
+                                                  (i.e., more context
+                                                    switches)
+
+
+
+Priority Scheduling
+
+-- each process is assigned a priority either internally or externally
+
+   -- external priorities set by users (nice, cron, $$$)
+
+   -- internal priorities assigned based on one or more process attributes
+       (e.g., average CPU burst time, ratio of CPU to I/O activity,
+              system resource usage, etc.)
+
+-- the process with the highest priority gets scheduled first
+
+-- when multiple processes have the same priority, we need to apply
+    a secondary algorithm to that subset (e.g., FCFS)
+
+-- key problem is starvation
+
+   -- to avoid starvation, aging is often applied
+
+   -- aging: as the wait time for a process increases, its priority
+              should also increase
+
+
+
+
+To address problems of starvation and very long wait times.....
+
+Round Robin (RR) Scheduling Algorithm
+
+-- FCFS with a time limit (i.e., a timeslice or time quantum)
+
+-- When a process starts using the CPU, a timer is set
+
+   -- The process either finishes its burst before the timer
+       expires or its PREEMPTED by the expiration of the timer
+        (in which case the process goes to the end of the Q)
+
+-- Illusion in which all processes are "simultaneously" using the CPU
+
+-- Average wait times tend to be longer
+-- Also increases number of context switches
+
+-- Selection of timeslice is crucial
+
+   -- too large of a timeslice and we have FCFS
+
+   -- too small of a timeslice and we have too many context switches
+
+-- Timeslice typically 10-100ms with context switch ~10 microseconds
+
+                                        1
+-- With N processes, each process gets ---th of CPU time (fairness)
+                                        N
+
+
+ e.g. a process with CPU burst time of 8 ms
+
+   timeslice 1 ms:
+
+  +-+-+-+-+-+-+-+-+
+  | | | | | | | | |     8 context switches!
+  +-+-+-+-+-+-+-+-+
+
+   timeslice 5 ms:
+
+  +---------+-----+
+  |         |     |     1 context switch
+  +---------+-----+
+
+   timeslice 8 ms (or more):
+
+  +---------------+
+  |               |     0 context switches....
+  +---------------+
+
+
+
+
+
+e.g. with 4 processes
+
+ process   burst times
+   P1        6 ms
+   P2        3 ms
+   P3        1 ms
+   P4        7 ms
+
+ timeslice: 2 ms
+
+Q: P1 P2 P3 P4
+Q: P2 P3 P4
+Q: P3 P4 P1
+Q: P4 P1 P2
+Q: P1 P2
+Q: P2 P4
+Q: P4 P1
+Q: P1
+Q: P4
+Q:
+
+  |
+P1|XX     XX   XX.
+P2|  XX     x.
+P3|    X.
+P4|     XX   XX  XXX.
+  +-------------------------------> time
+            11111111
+  012345678901234567
+
+turnaround times with timeslice 2 ms
+P1: 14 ms  (wait time  8 ms)
+P2: 10 ms  (wait time  7 ms)
+P3:  5 ms  (wait time  4 ms)
+P4: 17 ms  (wait time 10 ms)  avg wait time is 7.25 ms
+   ------
+    46 ms / 4 ==> 11.5 ms
+
+
+TO DO: what happens with a timeslice of 8 ms?    FCFS
+       what happens with a timeslice of 1 ms?
+
+ process   burst times
+   P1        6 ms
+   P2        3 ms
+   P3        1 ms
+   P4        7 ms
+
+
+
+-- Turnaround time is minimized if "most" processes finish
+    their respective CPU bursts within one timeslice
+
+   -- heuristic is 80% of CPU bursts should be less than timeslice
+
+-- GAINS: eliminate starvation; increase fairness
+
+
+
+
+
+

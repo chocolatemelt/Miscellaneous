@@ -1,0 +1,10 @@
+Kevin Zhang (zhangk6)
+Alex Shin (shina3)
+
+Features
++ Full mergesorting capability for 'agct' chemical bases
++ Error checking against faulty inputs or non-'agct' chemical bases (i.e. bases that don't exist)
+- Does not allow users to input 'AGCT', which is technically a possibly valid input
+
+Bugs
+- None that we know of

@@ -1,0 +1,67 @@
+[10/08/2015]
+
+Homework 3  extend deadline :-D   Tues 11:59PM
+
+Input format:
+
+ (operator operand1 operand2 ...)
+
+ each operand is either an integer (could be negative)
+   or an expression in parentheses
+
+
+ (* 5 (+ 15 12) 18)
+
+ (+ (/ 7 2) (* 3 8))
+
+
+top-level process:
+
+ char expr[1000];
+ 
+              i       j
+  expr: "(* 5 (+ 15 12) 18)"                           5 * (15 + 12) * 18
+         ^  ^ ^         ^                              (* 5 27 18)
+         0  3 5         15  <=== index values
+
+  strategy here is to have each child process
+   know at which index it should start
+
+
+  for each child process, start with:
+
+   i <=== start of operand in the expr string
+   j <=== end of operand in the expr string
+   p <=== pipe descriptors to use
+
+
+ create a pipe for each child process
+
+ each process: pipe()/fork() for each operand
+               read() for each operand's (child's) pipe
+               wait() for each operand (child)
+
+ parallelize to the extent possible
+
+
+ if an input error occurs (too few operands or invalid operator),
+  display the error message, then return a non-zero value back
+   to the parent (and in the parent, the wait() call should be non-zero
+    and the parent will propagate that error up to its parent, etc.)
+
+
+ e.g.   (- 100 40)
+
+     -
+    / \
+   /   \
+  100  40
+
+ e.g.  (/ 500 2 50)    500 / 2 ==> 250;  250 / 50 ==> 5
+
+====================================================
+
+
+
+
+
