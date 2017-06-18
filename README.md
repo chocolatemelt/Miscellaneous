@@ -1,3 +1,3 @@
-Miscellaneous Code Landfill
+miscellaneous code
 ======
-Any code I think is interesting / useful but doesn't deserve it's own repo.
+i have a hoarding problem

@@ -1,9 +1,0 @@
-{
-  "type": "animal.domestic.dog",
-  "name": "fido",
-  "trained": true,
-  "breed": [
-    "husky",
-    "corgi"
-  ]
-}
