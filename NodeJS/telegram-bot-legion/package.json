@@ -1,0 +1,19 @@
+{
+  "name": "telegram-bots",
+  "version": "0.0.1",
+  "description": "testing telegram-bots npm.",
+  "author": "tenks & chocolatemelt",
+  "dependencies": {
+    "chance": "^0.7.6",
+    "humanize": "0.0.9",
+    "lodash": "^3.9.3",
+    "nyaatorrents": "~1.0.4",
+    "read-file": "^0.1.2",
+    "request": "~2.58.0",
+    "telegram-bot": "^0.1.0",
+    "xml2js": "~0.4.9"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.9.3"
+  }
+}
