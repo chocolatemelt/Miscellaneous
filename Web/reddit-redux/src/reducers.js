@@ -7,7 +7,7 @@ import {
   RECEIVE_POSTS
 } from './actions'
 
-function addSubreddit(state = '', action) {
+export function addSubreddit(state = '', action) {
   switch(action.type) {
     case ADD_SUBREDDIT:
       return action.subreddit
@@ -36,8 +36,7 @@ function posts(
   switch(action.type) {
     case INVALIDATE_SUBREDDIT:
       return Object.assign({}, state, {
-        isFetching: true,
-        didInvalidate: false
+        didInvalidate: true
       })
     case REQUEST_POSTS:
       return Object.assign({}, state, {
