@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
+  addSubreddit,
   selectSubreddit,
   fetchPostsIfNeeded,
   invalidateSubreddit
 } from '../actions'
 
-import AddSubreddit from '../components/AddSubreddit'
+import AddSubreddit from '../containers/AddSubreddit'
 import Picker from '../components/Picker'
 import Posts from '../components/Posts'
 
@@ -20,8 +21,6 @@ class AsyncApp extends Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleRefreshClick = this.handleRefreshClick.bind(this)
-    this.handleFormChange = this.handleFormChange.bind(this)
-    this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
   componentDidMount() {
@@ -49,17 +48,6 @@ class AsyncApp extends Component {
     dispatch(fetchPostsIfNeeded(selectedSubreddit))
   }
 
-  handleFormChange(data) {
-    console.log(data.target.value)
-    this.setState({ newSubreddit: data.target.value })
-  }
-
-  handleFormSubmit(e) {
-    e.preventDefault()
-
-    alert(this.state.newSubreddit)
-  }
-
   render() {
     const { selectedSubreddit, posts, isFetching, lastUpdated } = this.props
     return (
@@ -70,11 +58,7 @@ class AsyncApp extends Component {
           options={['puzzleanddragons', 'fountainpens', 'pen_swap']}
         />
         <br />
-        <AddSubreddit
-          value={''}
-          handleChange={this.handleFormChange}
-          handleSubmit={this.handleFormSubmit}
-        />
+        <AddSubreddit />
         <p>
           {lastUpdated &&
             <span>

@@ -7,8 +7,13 @@ import {
   RECEIVE_POSTS
 } from './actions'
 
-function addSubreddit(state, action) {
-  return action.subreddit
+function addSubreddit(state = '', action) {
+  switch(action.type) {
+    case ADD_SUBREDDIT:
+      return action.subreddit
+    default:
+      return state
+  }
 }
 
 function selectedSubreddit(state = 'puzzleanddragons', action) {
@@ -65,6 +70,7 @@ function postsBySubreddit(state = {}, action) {
 }
 
 const rootReducer = combineReducers({
+  addSubreddit,
   postsBySubreddit,
   selectedSubreddit
 })
