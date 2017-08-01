@@ -5,7 +5,7 @@ export default class Select extends Component {
   render() {
     const { value, onChange, options } = this.props
 
-    if(options) {
+    if(options.length > 0) {
       return(
         <div>
           <h1>{value}</h1>
@@ -14,6 +14,7 @@ export default class Select extends Component {
               <option value={option} key={option}>{option}</option>
             ))}
           </select>
+          <br />
         </div>
       )
     }
@@ -24,7 +25,7 @@ export default class Select extends Component {
 }
 
 Select.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  value: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.string.isRequired),
+  value: PropTypes.string,
   onChange: PropTypes.func.isRequired
 }
