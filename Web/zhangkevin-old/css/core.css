@@ -1,0 +1,114 @@
+/* defaults */
+body, html {
+	position: relative;
+	width: 100%;
+	height: 100%;
+    color: #111;
+	font-size: 16pt;
+    line-height: 1.4em;
+}
+
+/* sections are full */
+section {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* landing page */
+#splash h1 {
+	display: block;
+	position: absolute;
+    width: 67.7vmin;
+	height: 70vmin;
+	top: 50%;
+    left: 15vmin;
+	margin-top: -35vmin;
+	background: url('../img/splash.png') no-repeat 0 0;
+	background-size: 67.7vmin 70vmin; /* i did the monster math */
+	text-indent: -9999px;
+	overflow: hidden;
+}
+
+/* about page */
+#about {
+    font-family: DINPro, 'Open Sans', sans-serif;
+    font-size: 1.2em;
+}
+
+#about h2 {
+    display: block;
+    width: 499px;
+    height: 323px;
+    margin-left: 15vmin;
+    margin-bottom: 60px;
+    background: url('../img/about.gif') no-repeat 0 0;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+#about p {
+    display: block;
+    width: 499px;
+    margin-left: 15vmin;
+    margin-bottom: 60px;
+}
+
+#about ul {
+    margin-left: 15vmin;
+}
+
+#about ul li {
+    margin-bottom: 10px;
+}
+
+#about ul li a {
+    color: #000;
+}
+
+/* case studies */
+.cs {
+    font-family: DINPro, 'Open Sans', sans-serif;
+    font-size: 1em;
+}
+
+.cs .wrapper {
+    position: absolute;
+    display: block;
+    width: 90%;
+    top: 5vmax;
+    left: 5vmax;
+}
+
+.cs .knockout {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding-left: 4px;
+    padding-right: 5px;
+    color: #fff;
+    font-family: Akzidenz-Grotesk BQ, 'Raleway', sans-serif;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    background-color: #111;
+}
+
+/* case study - portfolio */
+#cs-portfolio img {
+    border: 1px solid #b9b9b9;
+}
+
+#cs-portfolio .left {
+    float: left;
+    width: 65%;
+}
+
+#cs-portfolio .left img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#cs-portfolio .right {
+    float: right;
+    width: 35%;
+}
